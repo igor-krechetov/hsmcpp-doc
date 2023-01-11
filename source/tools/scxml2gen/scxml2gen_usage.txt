@@ -1,0 +1,28 @@
+scxml2gen.py -h
+
+usage: scxml2gen.py [-h] (-code | -plantuml) -scxml SCXML [-class_name CLASS_NAME] [-class_suffix CLASS_SUFFIX] [-template_hpp TEMPLATE_HPP] [-template_cpp TEMPLATE_CPP] [-dest_hpp DEST_HPP] [-dest_cpp DEST_CPP]
+                    [-dest_dir DEST_DIR] [-out OUT]
+
+State machine code/diagram generator
+
+optional arguments:
+    -h, --help            show this help message and exit
+    -code                 generate C++ code based on hsmcpp library. Supported arguments: -class_name, -class_suffix, -template_hpp, -template_cpp, -dest_hpp, -dest_cpp, -dest_dir
+    -plantuml             generate plantuml state diagram
+    -scxml SCXML, -s SCXML
+                        path to state machine in SCXML format
+    -class_name CLASS_NAME, -c CLASS_NAME
+                        class name used in generated code
+    -class_suffix CLASS_SUFFIX, -cs CLASS_SUFFIX
+                        suffix to append to class name (default: Base)
+    -template_hpp TEMPLATE_HPP, -thpp TEMPLATE_HPP
+                        path to HPP template file
+    -template_cpp TEMPLATE_CPP, -tcpp TEMPLATE_CPP
+                        path to CPP template file
+    -dest_hpp DEST_HPP, -dhpp DEST_HPP
+                        path to file in which to store generated HPP content (default: ClassSuffixBase.hpp)
+    -dest_cpp DEST_CPP, -dcpp DEST_CPP
+                        path to file in which to store generated CPP content (default: ClassSuffixBase.cpp)
+    -dest_dir DEST_DIR, -d DEST_DIR
+                        path to folder where to store generated files (ignored if -dest_hpp and -dest_cpp are provided)
+    -out OUT, -o OUT      path for storing generated Plantuml file (only for -plantuml)

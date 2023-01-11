@@ -1,0 +1,15 @@
+@startuml
+
+[*] -right-> ParentState
+
+state ParentState {
+    [*] -right-> StateA
+
+    state EXIT_1 <<exitPoint>>
+    StateA -right-> EXIT_1: EVENT_2
+    StateA --> [*]: EVENT_3
+}
+
+EXIT_1 -right-> StateB: ON_EXIT_1
+
+@enduml
