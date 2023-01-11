@@ -2,7 +2,8 @@
 Documentation for [hsmcpp](https://github.com/igor-krechetov/hsmcpp) library
 
 # Installation
-pip install sphinx m2r2 sphinx-rtd-theme
+apt install plantuml
+pip install sphinx m2r2 sphinx-rtd-theme sphinxemoji
 
 # Bulding documentation
 make html
