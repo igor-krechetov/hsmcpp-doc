@@ -17,13 +17,13 @@ Since any two of the 3 defined UI applications could be active at any
 given time we would need to create 3 separate HSMs to handle their logic
 separately. Sounds a bit inconvenient, but still ok at this point.
 
-.. image:: ./_gen/parallel_usecase_media.png
+.. uml:: ./parallel_usecase_media.pu
    :alt: Media HSM
    :width: 30 %
-.. image:: ./_gen/parallel_usecase_weather.png
+.. uml:: ./parallel_usecase_weather.pu
    :alt: Weather HSM
    :width: 30 %
-.. image:: ./_gen/parallel_usecase_navi.png
+.. uml:: ./parallel_usecase_navi.pu
    :alt: Navigation HSM
    :width: 30 %
 
@@ -37,7 +37,7 @@ All of this could be avoided by using the parallel states feature.
 Essentially it allows HSM to have multiple active states and process
 their transitions in parallel.
 
-.. image:: ./_gen/parallel_usecase_grouped.png
+.. uml:: ./parallel_usecase_grouped.pu
    :align: center
    :alt: Sample HSM transition
 

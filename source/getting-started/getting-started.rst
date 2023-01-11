@@ -90,7 +90,7 @@ Hello World!
 
 Let's create the smallest state machine which would represent a switch button:
 
-.. image:: ./_gen/00_helloworld.png
+.. uml:: ./00_helloworld.pu
    :align: center
    :alt: HelloWorld state machine
 

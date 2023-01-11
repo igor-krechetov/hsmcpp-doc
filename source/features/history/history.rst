@@ -13,7 +13,7 @@ A history element is used to record current state of a parent state. Stored info
 to restore previously active elements when reentering parent state. The following diagram, describing
 a simple washing machine logic, illustrates the use of history element.
 
-.. image:: ./_gen/history_sample.png
+.. uml:: ./history_sample.pu
    :align: center
    :alt: Example of HSM with history element
 
@@ -55,27 +55,27 @@ It applies to the state that contains it.
 Let's look at the example. Let's say we have this state machine with
 **StateE** being currently active:
 
-.. image:: ./_gen/history_shallow_01.png
+.. uml:: ./history_shallow_01.pu
    :align: center
    :alt: Sample HSM transition
 
 After **E1** transition active state will become **StateD**:
 
-.. image:: ./_gen/history_shallow_02.png
+.. uml:: ./history_shallow_02.pu
    :align: center
    :alt: Sample HSM transition
 
 Since we are using shallow history type, HSM will remember **Parent2** as a
 history target for **Parent1**:
 
-.. image:: ./_gen/history_shallow_03.png
+.. uml:: ./history_shallow_03.pu
    :align: center
    :alt: Sample HSM transition
 
 Since **Parent2** has substates entry transition will be automatically
 executed and **StateC** will become active:
 
-.. image:: ./_gen/history_shallow_04.png
+.. uml:: ./history_shallow_04.pu
    :align: center
    :alt: Sample HSM transition
 
@@ -95,20 +95,20 @@ applies to the state that contains it.
 Let's look at the example. We have exactly same state machine, but now
 history type is set to "deep":
 
-.. image:: ./_gen/history_deep_01.png
+.. uml:: ./history_deep_01.pu
    :align: center
    :alt: Sample HSM transition
 
 While moving to **StateD**, HSM will save **StateE** as a history target
 for **Parent1**:
 
-.. image:: ./_gen/history_deep_02.png
+.. uml:: ./history_deep_02.pu
    :align: center
    :alt: Sample HSM transition
 
 So after **E2** transition to history state, our HSM will look exactly same
 as it's initial version:
 
-.. image:: ./_gen/history_deep_01.png
+.. uml:: ./history_deep_01.pu
    :align: center
    :alt: Sample HSM transition

@@ -4,18 +4,19 @@
    contain the root `toctree` directive.
 
 ##################################
-Welcome to hsmcpp's documentation!
+Hsmcpp Documentation
 ##################################
 
 .. note::
    This project is under active development.
 
-.. todo: add project description here
-
+.. mdinclude:: ../hsmcpp/README.md
+   :end-line: 97
 
 .. toctree::
    :maxdepth: 4
    :titlesonly:
+   :caption: Content
 
    getting-started/getting-started
    features/features
@@ -24,4 +25,13 @@ Welcome to hsmcpp's documentation!
    code-generation/code-generation
    tools/tools
 
-.. mdinclude:: ../hsmcpp/README.md
+.. toctree::
+   :maxdepth: 4
+   :titlesonly:
+   :caption: Other
+   :hidden:
+
+   changelog
+   license
+
+

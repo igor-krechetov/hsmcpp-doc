@@ -11,7 +11,7 @@ Substates
 
 Imagine we have the following state machine:
 
-.. image:: ./_gen/substates_fsm_approach.png
+.. uml:: ./substates_fsm_approach.pu
    :align: center
    :alt: FSM approach to substates
 
@@ -20,7 +20,7 @@ In this example **EVENT_CANCEL** must be added for any state except
 become a significant issue for maintenance. So such logic could be
 simplified using substates:
 
-.. image:: ./_gen/substates_sample.png
+.. uml:: ./substates_sample.pu
    :align: center
    :alt: HSM approach to substates
 
@@ -73,7 +73,7 @@ different entry state depending on the triggering transition.
 
 This could be done by specifying multiple entry points with conditions.
 
-.. image:: ./_gen/substates_cond_entries.png
+.. uml:: ./substates_cond_entries.pu
    :align: center
    :alt: Conditional entry points example
 

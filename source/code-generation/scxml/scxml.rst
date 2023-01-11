@@ -261,7 +261,7 @@ Using <xi:include> with a wrapper state
 
 **Result structure**
 
-.. image:: ./_gen/xiinclude_wrapped.png
+.. uml:: ./xiinclude_wrapped.pu
    :align: center
    :alt: Example of wrapped xi:include
 
@@ -296,7 +296,7 @@ in state1.scxml:
 
 **Result structure**
 
-.. image:: ./_gen/xiinclude_direct.png
+.. uml:: ./xiinclude_direct.pu
    :align: center
    :alt: Example of direct usage of xi:include
 
@@ -325,6 +325,6 @@ was added only because it's supported by `scxmlgui <https://github.com/fmorbini/
 
 **Result structure**
 
-.. image:: ./_gen/state_src_include.png
+.. uml:: ./state_src_include.pu
    :align: center
    :alt: Example of using state::src

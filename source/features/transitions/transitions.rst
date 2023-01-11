@@ -10,7 +10,7 @@ Transitions
 .. warning:: TODO: fix API links
 
 
-.. image:: ./_gen/sample_transition.png
+.. uml:: ./sample_transition.pu
    :align: center
    :alt: Sample HSM transition
 
@@ -26,7 +26,7 @@ different one. Its definition includes:
 
 HSM applies following logic when trying to execute a transition:
 
-.. image:: ./_gen/callbacks_execution_order.png
+.. uml:: ./callbacks_execution_order.pu
    :align: center
    :alt: Callbacks execution order
 
@@ -91,7 +91,7 @@ Self transitions
 Self-transitions are transitions for which starting and target states
 are the same.
 
-.. image:: ./_gen/selftransition_simple.png
+.. uml:: ./selftransition_simple.pu
    :align: center
    :alt: Simple self-transition
 
@@ -121,21 +121,21 @@ There are 2 types of self-transitions:
 Difference between these two types can be demonstrated with this
 example:
 
-.. image:: ./_gen/selftransition.png
+.. uml:: ./selftransition.pu
    :align: center
    :alt: Self-transition example
 
 Let's assume **StateC** is currently active. If **EVENT_INTERNAL** is
 triggered then only following callbacks will be executed:
 
-.. image:: ./_gen/selftransition_internal.png
+.. uml:: ./selftransition_internal.pu
    :align: center
    :alt: Internal self-transition example
 
 If **EVENT_EXTERNAL** is triggered then all corresponding exit/enter
 callbacks will be processed:
 
-.. image:: ./_gen/selftransition_external.png
+.. uml:: ./selftransition_external.pu
    :align: center
    :alt: External self-transition example
 
@@ -169,7 +169,7 @@ still handle them in a deterministic and predictable manner:
 
 Let's check the following example:
 
-.. image:: ./_gen/transition_priorities.png
+.. uml:: ./transition_priorities.pu
    :align: center
    :alt: Transition priorities
 

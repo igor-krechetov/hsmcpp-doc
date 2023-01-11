@@ -11,7 +11,7 @@ States
 Overview
 --------
 
-.. image:: ./_gen/simple_state.png
+.. uml:: ./simple_state.pu
    :align: center
    :alt: Simple state example
 

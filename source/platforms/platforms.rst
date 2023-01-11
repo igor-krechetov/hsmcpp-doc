@@ -84,7 +84,7 @@ uses std::thread to start a new thread.
 
 Simplified logic:
 
-.. image:: ./_gen/dispatchers_std.png
+.. uml:: ./dispatchers_std.pu
    :align: center
    :alt: Simplified events dispatcher logic
 
