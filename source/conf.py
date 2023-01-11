@@ -30,7 +30,7 @@ plantuml_output_format = 'png'
 extensions = ['sphinx.ext.extlinks', 'sphinxemoji.sphinxemoji', 'm2r2', 'sphinxcontrib.plantuml']
 
 templates_path = ['_templates']
-exclude_patterns = []
+exclude_patterns = ['hsmcpp']
 
 
 # -- Options for HTML output -------------------------------------------------

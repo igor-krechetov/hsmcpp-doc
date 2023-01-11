@@ -10,7 +10,7 @@ Hsmcpp Documentation
 .. note::
    This project is under active development.
 
-.. mdinclude:: ../hsmcpp/README.md
+.. mdinclude:: ./hsmcpp/README.md
    :end-line: 97
 
 .. toctree::

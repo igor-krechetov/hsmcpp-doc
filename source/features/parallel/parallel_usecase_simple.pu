@@ -1,0 +1,27 @@
+@startuml
+
+state Media {
+state "Idle" as Idle1
+
+[*] --> Idle1
+Idle1 --> MediaRunning: OPEN_MEDIA
+MediaRunning -up-> Idle1: CLOSE_MEDIA
+}
+
+state Navigation {
+state "Idle" as Idle2
+
+[*] --> Idle2
+Idle2 --> NavigationRunning: OPEN_NAVIGATION
+NavigationRunning -up-> Idle2: CLOSE_NAVIGATION
+}
+
+state Weather {
+state "Idle" as Idle3
+
+[*] --> Idle3
+Idle3 --> WeatherRunning: OPEN_WEATHER
+WeatherRunning -up-> Idle3: CLOSE_WEATHER
+}
+
+@enduml

@@ -7,6 +7,10 @@ build:
   apt_packages:
     - plantuml
 
+# for hsmcpp repo
+submodules:
+  include: all
+
 # Build from the docs/ directory with Sphinx
 sphinx:
   configuration: source/conf.py

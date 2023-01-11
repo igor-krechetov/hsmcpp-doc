@@ -21,7 +21,7 @@ could be also defined using **hsmcpp**.
 Here is an example of a simple HSM which only contains states and
 transitions:
 
-.. image:: ./transitions/_gen/sample_transition.png
+.. uml:: ./transitions/sample_transition.pu
    :align: center
    :alt: Simple HSM Example
 

@@ -99,7 +99,7 @@ For more complex examples see :repo-link:`/examples` folder.
 For simplicity we are going to use STD dispatcher to avoid additional
 dependencies. Source code is available in :repo-link:`/examples/00_helloworld/00_helloworld_std.cpp` .
 
-.. literalinclude:: ../../hsmcpp/examples/00_helloworld/00_helloworld_std.cpp
+.. literalinclude:: /hsmcpp/examples/00_helloworld/00_helloworld_std.cpp
    :language: c++
 
 
@@ -108,7 +108,7 @@ CMake script (pkg-config)
 
 To use hsmcpp as a pkg-config module you can follow template: :repo-link:`/examples/07_build/using_pkgconfig/CMakeLists.txt`
 
-.. literalinclude:: ../../hsmcpp/examples/07_build/using_pkgconfig/CMakeLists.txt
+.. literalinclude:: /hsmcpp/examples/07_build/using_pkgconfig/CMakeLists.txt
    :language: cmake
 
 
@@ -117,7 +117,7 @@ CMake script (as source code)
 
 To compile hsmcpp together with your project you can follow template: :repo-link:`/examples/07_build/using_code/CMakeLists.txt`
 
-.. literalinclude:: ../../hsmcpp/examples/07_build/using_code/CMakeLists.txt
+.. literalinclude:: /hsmcpp/examples/07_build/using_code/CMakeLists.txt
    :language: cmake
 
 
@@ -133,5 +133,5 @@ downsides of this approach are:
 
 You can use this CMake template: :repo-link:`/examples/07_build/using_fetch/CMakeLists.txt`
 
-.. literalinclude:: ../../hsmcpp/examples/07_build/using_fetch/CMakeLists.txt
+.. literalinclude:: /hsmcpp/examples/07_build/using_fetch/CMakeLists.txt
    :language: cmake

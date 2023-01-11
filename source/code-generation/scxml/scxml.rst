@@ -250,12 +250,12 @@ Using <xi:include> with a wrapper state
 
 :repo-link:`/examples/scxml/includes/xi_include_wrapped.scxml`
 
-.. literalinclude:: ../../../hsmcpp/examples/scxml/includes/xi_include_wrapped.scxml
+.. literalinclude:: /hsmcpp/examples/scxml/includes/xi_include_wrapped.scxml
    :language: xml
 
 :repo-link:`/examples/scxml/includes/substates1.scxml`
 
-.. literalinclude:: ../../../hsmcpp/examples/scxml/includes/substates1.scxml
+.. literalinclude:: /hsmcpp/examples/scxml/includes/substates1.scxml
    :language: xml
 
 
@@ -271,7 +271,7 @@ Including <xi:include> directly
 
 :repo-link:`/examples/scxml/includes/xi_include_direct.scxml`
 
-.. literalinclude:: ../../../hsmcpp/examples/scxml/includes/xi_include_direct.scxml
+.. literalinclude:: /hsmcpp/examples/scxml/includes/xi_include_direct.scxml
    :language: xml
 
 Note how we define a transition to State1 even though it's not defined
@@ -284,7 +284,7 @@ state1.scxml will be included.
 
 :repo-link:`/examples/scxml/includes/state1.scxml`
 
-.. literalinclude:: ../../../hsmcpp/examples/scxml/includes/state1.scxml
+.. literalinclude:: /hsmcpp/examples/scxml/includes/state1.scxml
    :language: xml
 
 Note how we define a transition to State2 even though it's not defined
@@ -320,7 +320,7 @@ was added only because it's supported by `scxmlgui <https://github.com/fmorbini/
 
 :repo-link:`/examples/scxml/includes/state_src_include.scxml`
 
-.. literalinclude:: ../../../hsmcpp/examples/scxml/includes/state_src_include.scxml
+.. literalinclude:: /hsmcpp/examples/scxml/includes/state_src_include.scxml
    :language: xml
 
 **Result structure**

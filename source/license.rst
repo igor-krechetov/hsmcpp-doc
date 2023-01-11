@@ -4,5 +4,5 @@
 License
 ##################################
 
-.. literalinclude:: ../hsmcpp/LICENSE
+.. literalinclude:: /hsmcpp/LICENSE
     :language: text

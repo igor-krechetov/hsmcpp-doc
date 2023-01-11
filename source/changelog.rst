@@ -4,5 +4,5 @@
 Changelog
 ##################################
 
-.. mdinclude:: ../hsmcpp/CHANGELOG.md
+.. mdinclude:: ./hsmcpp/CHANGELOG.md
     :start-line: 3

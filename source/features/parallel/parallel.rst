@@ -17,15 +17,8 @@ Since any two of the 3 defined UI applications could be active at any
 given time we would need to create 3 separate HSMs to handle their logic
 separately. Sounds a bit inconvenient, but still ok at this point.
 
-.. uml:: ./parallel_usecase_media.pu
-   :alt: Media HSM
-   :width: 30 %
-.. uml:: ./parallel_usecase_weather.pu
-   :alt: Weather HSM
-   :width: 30 %
-.. uml:: ./parallel_usecase_navi.pu
-   :alt: Navigation HSM
-   :width: 30 %
+.. uml:: ./parallel_usecase_simple.pu
+   :alt: Ungrouped HSM states
 
 But what if eventually our requirements get extended and now we also
 need to add interaction between these apps? For example, ability to open
@@ -39,7 +32,7 @@ their transitions in parallel.
 
 .. uml:: ./parallel_usecase_grouped.pu
    :align: center
-   :alt: Sample HSM transition
+   :alt: Sample parallel states
 
 This structure can be achieved by simply defining multiple transitions
 which will be valid at the same time:
