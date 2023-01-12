@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 ##################################
-Hsmcpp Documentation
+hsmcpp Documentation
 ##################################
 
 .. note::
