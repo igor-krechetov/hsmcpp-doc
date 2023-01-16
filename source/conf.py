@@ -48,7 +48,6 @@ html_css_files = [
 ]
 
 html_theme_options = {
-    'analytics_id': 'G-8948Z3LWSQ',
     'navigation_depth': 4,
     'titles_only': True
 }

@@ -18,6 +18,7 @@ given time we would need to create 3 separate HSMs to handle their logic
 separately. Sounds a bit inconvenient, but still ok at this point.
 
 .. uml:: ./parallel_usecase_simple.pu
+   :align: center
    :alt: Ungrouped HSM states
 
 But what if eventually our requirements get extended and now we also
