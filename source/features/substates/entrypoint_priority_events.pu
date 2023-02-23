@@ -1,0 +1,41 @@
+@startuml
+left to right direction
+
+state "With Event Conditions" as WithEvents {
+    state "C02" as C02_1_initial #orange
+    C02_1_initial --> C02_1: **E1**
+    state C02_1 {
+        [*] --> C02_1_Substate_1 #LightGreen: E1
+        [*] --> C02_1_Substate_2 #LightGreen
+    }
+--
+    state "C02" as C02_2_initial #orange
+    C02_2_initial --> C02_2: **E1**
+    state C02_2 {
+        [*] --> C02_2_Substate_1 #LightGreen: E1
+        [*] --> C02_2_Substate_3: E2
+    }
+--
+    state "C02" as C02_3_initial #orange
+    C02_3_initial --> C02_3: **E2**
+    state C02_3 {
+        [*] --> C02_3_Substate_1: E1
+        [*] --> C02_3_Substate_2 #LightGreen
+    }
+--
+    state "C02" as C02_4_initial #orange
+    C02_4_initial --> C02_4: **E5**
+    state C02_4 {
+        [*] --> C02_4_Substate_1: <<condition == FALSE>>\nE5 && {condition}
+        [*] --> C02_4_Substate_2 #LightGreen
+    }
+--
+    state "C02" as C02_5_initial #orange
+    C02_5_initial --> C02_5: **E5**
+    state C02_5 {
+        [*] --> C02_5_Substate_1 #LightGreen: <<condition == TRUE>>\nE5 && {condition}
+        [*] --> C02_5_Substate_2 #LightGreen
+    }
+}
+
+@enduml

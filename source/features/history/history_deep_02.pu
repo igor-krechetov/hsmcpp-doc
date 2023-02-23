@@ -18,6 +18,6 @@ state Parent1 {
 }
 
 Parent1 -down-> StateD: E1
-state StateD #00FF00
+state StateD#LightGreen
 
 @enduml

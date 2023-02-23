@@ -8,7 +8,7 @@ Timers
 
 
 Overview
---------
+========
 
 Timers are used to initiate transition logic from within HSM without any
 additional code. Some common examples of timers usage are:
@@ -18,7 +18,7 @@ additional code. Some common examples of timers usage are:
 
 
 Usage
------
+=====
 
 To use a timer in your HSM you first need to register it using this API:
 

@@ -11,7 +11,7 @@ state ParentState_1 {
         [*] --> StateB
         StateB -> StateC: EVENT_2
 
-        state StateC #00FF00
+        state StateC#LightGreen
     }
 }
 

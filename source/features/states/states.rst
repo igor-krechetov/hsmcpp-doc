@@ -9,7 +9,7 @@ States
 
 
 Overview
---------
+========
 
 .. uml:: ./simple_state.pu
    :align: center
@@ -46,7 +46,7 @@ State callbacks are optional and include:
 
 
 Usage
------
+=====
 
 Assuming we create HSM as a separate object, here are possible ways to
 register a state:
@@ -61,7 +61,7 @@ example) you will need to provide class name as a template parameter.
 .. _features-states-actions:
 
 State actions
--------------
+=============
 
 Besides implementing logic inside HSM callbacks it's possible to define
 some operations as state actions. These actions are built-in commands

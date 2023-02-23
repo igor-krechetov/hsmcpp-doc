@@ -10,6 +10,9 @@ Transitions
 .. warning:: TODO: fix API links
 
 
+Overview
+========
+
 .. uml:: ./sample_transition.pu
    :align: center
    :alt: Sample HSM transition
@@ -39,7 +42,7 @@ their code since it most probably will result in unpredictable
 behavior.**
 
 Usage
------
+=====
 
 To register transition use
 `registerTransition() <../API#registertransition>`__ API:
@@ -52,22 +55,6 @@ Call `transition() <../API#transition>`__ API to trigger a transition.
 .. code-block::  c++
 
    hsm.transition(MyEvents::EVENT_1);
-
-By default, transitions are executed asynchronously and it's a
-recommended way to use them. When multiple events are sent at the same
-time they will be internally queued and executed sequentially.
-Potentially it's possible to have multiple events queued when you need
-to send a new event which will make previous events obsolete (for
-example user want to cancel operation). In this case you can use
-`transitionWithQueueClear() <../API#transitionwithqueueclear>`__ or
-`transitionEx() <../API#transitionex>`__ to clear pending events:
-
-.. code-block::  c++
-
-   hsm.transitionWithQueueClear(MyEvents::EVENT_1);
-   hsm.transitionEx(MyEvents::EVENT_1, true, false);
-
-Keep in mind that current ongoing transition can't be canceled.
 
 Normally if you try to send event which is not handled in current state
 it will be just ignored by HSM without any notification. But sometimes
@@ -85,8 +72,30 @@ It will check if provided event will be accepted by HSM taking in consideration:
           another transition be careful when using it in multi-threaded
           environment.
 
+.. _features-transitions-cancellation:
+
+Cancelling pending transitions
+------------------------------
+
+By default, transitions are executed asynchronously and it's a
+recommended way to use them. When multiple events are sent at the same
+time they will be internally queued and executed sequentially.
+Potentially it's possible to have multiple events queued when you need
+to send a new event which will make previous events obsolete (for
+example user want to cancel operation). In this case you can use
+`transitionWithQueueClear() <../API#transitionwithqueueclear>`__ or
+`transitionEx() <../API#transitionex>`__ to clear pending events:
+
+.. code-block::  c++
+
+   hsm.transitionWithQueueClear(MyEvents::EVENT_1);
+   hsm.transitionEx(MyEvents::EVENT_1, true, false);
+
+.. note:: Current ongoing transition can't be canceled.
+
+
 Self transitions
-----------------
+================
 
 Self-transitions are transitions for which starting and target states
 are the same.
@@ -101,7 +110,9 @@ To register a self-transition use
 .. literalinclude:: transitions_self_api.cpp
    :language: c++
 
-.. note:: Though using registerSelfTransition() is a recommended way for defining self-transitions, you can also use `registerTransition() <../API#registertransition>`__ API. Keep in mind that in this case transition type will be automatically set to **"external"**.
+.. note:: Though using registerSelfTransition() is a recommended way for defining self-transitions, you can also use
+          `registerTransition() <../API#registertransition>`__ API. Keep in mind that in this case transition type
+          will be automatically set to **"external"**.
 
 There are 2 types of self-transitions:
 
@@ -142,7 +153,7 @@ callbacks will be processed:
 .. note:: Notice how after external self-transition **StateB** became active. This happened due to state machine exiting from **ParentState_1** and, consequentially, exiting from it's substates too.
 
 Conditional transitions
------------------------
+=======================
 
 Sometimes transition should be executed only when a specific condition
 is met. This could be achieved by setting condition callback and
@@ -150,7 +161,7 @@ expected value. Transition will be ignored if value returned by callback
 doesnt match expected one.
 
 Priority of transitions
------------------------
+=======================
 
 Ideally, when designing state machine, you should avoid having multiple
 transitions which could be valid at the same time. This will make
@@ -189,7 +200,7 @@ Let's check the following example:
 -  then ParentState->StateF transition will be executed.
 
 Synchronous transitions
------------------------
+=======================
 
 .. warning:: It's **strongly discouraged** to usage synchronous transitions in production code. They were added mostly for testing purposes, since async unit tests are a headache to deal with.
 

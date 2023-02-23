@@ -9,7 +9,7 @@ state Parent1 {
     [*] -> StateB
     StateB -> Parent2
 
-    state Parent2 #00FF00 {
+    state Parent2#LightGreen {
         [*] -> StateC
         StateC -> StateE
     }

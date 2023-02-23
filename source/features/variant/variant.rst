@@ -4,13 +4,16 @@
 Variant Type
 ##################################
 
+Overview
+========
+
 Due to C++11 not having std::variant type, hsmcpp library comes with it's own
 implementation of Variant container. It supports all basic types and
 some variations of std containers.
 
 
 Supported types
----------------
+===============
 
 -  BYTE_1 (int8_t)
 -  BYTE_2 (int16_t)
@@ -31,7 +34,7 @@ Supported types
 
 
 Working with Variant type
--------------------------
+=========================
 
 To create a Variant from a basic type:
 

@@ -4,6 +4,9 @@
 Parallel States
 ##################################
 
+Overview
+========
+
 Up until now our state machines were handling a single state at a time
 and no more than one state could have been active at any given moment.
 That's easy to define and handle, but imagine that we are using HSM to

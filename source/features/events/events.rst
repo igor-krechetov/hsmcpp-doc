@@ -4,6 +4,9 @@
 Events
 ##################################
 
+Overview
+========
+
 Events are defined as an enum in yoru code:
 
 .. code-block::  c++

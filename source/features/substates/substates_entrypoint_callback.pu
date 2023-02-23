@@ -1,0 +1,10 @@
+@startuml
+' left to right direction
+
+[*] --> ParentState: E1
+
+state ParentState {
+    [*] --> Substate: { callback() is TRUE }
+}
+
+@enduml

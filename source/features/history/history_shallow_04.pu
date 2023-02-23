@@ -12,7 +12,7 @@ state Parent1 {
     state Parent2 {
         [*] -> StateC
         StateC -> StateE
-        state StateC #00FF00
+        state StateC#LightGreen
     }
 
     StateD -up-> [H]: E2

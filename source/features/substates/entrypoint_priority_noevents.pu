@@ -1,0 +1,27 @@
+@startuml
+left to right direction
+
+state "Without Event Conditions" as NoEvents {
+    state "C01" as C01_1_initial #orange
+    C01_1_initial --> C01_1: **E1**
+    state C01_1 {
+        [*] --> C01_1_Substate_1 #LightGreen
+        [*] --> C01_1_Substate_2 #LightGreen
+    }
+--
+    state "C01" as C01_2_initial #orange
+    C01_2_initial --> C01_2: **E1**
+    state C01_2 {
+        [*] --> C01_2_Substate_1 #LightGreen: <<condition == TRUE>>\n{condition}
+        [*] --> C01_2_Substate_2 #LightGreen
+    }
+--
+    state "C01" as C01_3_initial #orange
+    C01_3_initial --> C01_3: **E1**
+    state C01_3 {
+        [*] --> C01_3_Substate_1: <<condition == FALSE>>\n{condition}
+        [*] --> C01_3_Substate_2 #LightGreen
+    }
+}
+
+@enduml

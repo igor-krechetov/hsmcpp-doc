@@ -9,6 +9,9 @@ History
 
 .. warning:: TODO: Add Usage section
 
+Overview
+========
+
 A history element is used to record current state of a parent state. Stored information can be used
 to restore previously active elements when reentering parent state. The following diagram, describing
 a simple washing machine logic, illustrates the use of history element.
@@ -39,7 +42,7 @@ Two types of history are supported:
 
 
 Shallow history
----------------
+===============
 
 Shallow history pseudostate represents the most recent active substate
 of its parent state (but not the substates of that substate). A
@@ -81,7 +84,7 @@ executed and **StateC** will become active:
 
 
 Deep history
-------------
+============
 
 Deep history pseudostate represents the most recent active configuration
 of the composite state that directly contains this pseudostate (e.g.,

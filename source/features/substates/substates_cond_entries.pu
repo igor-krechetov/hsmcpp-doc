@@ -6,7 +6,7 @@ Playback --> Restart: RESTART
 Restart -> Playback: RESTART_DONE
 
 state Playback {
-    [*] --> Paused
+    [*] --> Paused: LOAD
     [*] --> Playing: RESTART_DONE
     Paused -right-> Playing: PLAY
     Playing -left-> Paused: PAUSE

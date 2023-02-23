@@ -15,7 +15,7 @@ hsmcpp Documentation
    This project is under active development.
 
 .. mdinclude:: ./hsmcpp/README.md
-   :end-line: 96
+   :end-line: 117
 
 .. toctree::
    :maxdepth: 4

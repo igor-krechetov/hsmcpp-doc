@@ -8,13 +8,51 @@ Platforms
    :local:
 
 
+.. |ok| replace:: |:white_check_mark:|
+.. |na| replace:: |:x:|
+
+
 .. warning:: TODO: add API links
+
+Most of the hsmcpp library's functionality is platform independent. But implementation of events dispatching, timers and multi-threading support highly depends on underlying OS. To allow support of various execution environments platform and framework specific parts were separated into an abstraction layer. Required abstractions include:
+
+- mutex
+- critical section
+- semaphore
 
 
 Supported Platforms
 ===================
 
-.. warning:: TODO: add content
+Platform selection is done using HSMBUILD_PLATFORM build setting. Depending on the provided value, some
+dispatchers might not be available:
+
++----------+----------------------------+-----------------+----------+--------------------------------------------------------------+
+| Value    | Supported Dispatchers      | Multi Threading |Interrupts| Description                                                  |
++==========+============================+=================+==========+==============================================================+
+| posix    | STD                        | |ok|            | |ok|     | This is the default implementation of OS specific primitives |
+|          +----------------------------+-----------------+----------+ based on standard C++ library. Any platform, that has a full |
+|          | Glib                       | |ok|            | |ok|     | set of std features available (specifically threads and      |
+|          +----------------------------+-----------------+----------+ synchronization) and is POSIX compliant, can be covered      |
+|          | Glibmm                     | |ok|            | |ok|     | by this implementation.                                      |
+|          +----------------------------+-----------------+----------+ For example: Linux, QNX, Integrity, etc.                     |
+|          | Qt                         | |ok|            | |ok|     |                                                              |
++----------+----------------------------+-----------------+----------+--------------------------------------------------------------+
+| windows  | STD                        | |ok|            | |na|     | Same as POSIX based implementation, but doesn't include      |
+|          +----------------------------+-----------------+----------+ support for interrupts/signals.                              |
+|          | Qt                         | |ok|            | |na|     |                                                              |
++----------+----------------------------+-----------------+----------+--------------------------------------------------------------+
+| arduino  | Arduino                    | |na|            | |ok|     | Arduino doesn't provide any multi-process or multi-threading |
+|          |                            |                 |          | support. So abstraction layer for this platform merely       |
+|          |                            |                 |          | provides an empty stub for a common logic to compile. All    |
+|          |                            |                 |          | dispatching and callbacks execution is done sequentially and |
+|          |                            |                 |          | no synchronization is required.                              |
++----------+----------------------------+-----------------+----------+--------------------------------------------------------------+
+| freertos | FreeRTOS                   | |ok|            | |ok|     | Even  though FreeRTOS comes with a basic implementation of   |
+|          |                            |                 |          | std library, it lacks threads related functionality due to   |
+|          |                            |                 |          | a bit different approach to concurrency (Tasks and           |
+|          |                            |                 |          | Interrupts instead of threads).                              |
++----------+----------------------------+-----------------+----------+--------------------------------------------------------------+
 
 
 Dispatchers Overview
@@ -33,7 +71,9 @@ needs.
 -  asynchronously invoke listeners callback after receiving event was
    emitted;
 -  provide thread-safe way to emit events;
--  maintain a list of listeners;
+-  provide interrupts-safe way to emit events;
+-  start/stop/restart timers;
+-  maintain a list of listeners.
 
 When initializing HSM object it's required to provide an instance of
 IHsmEventDispatcher. Unless you keep a copy of shared_ptr with
@@ -66,15 +106,24 @@ Currently hsmcpp includes the following dispatchers:
    -  dispatches hsm events through main Qt event loop. No additional
       threads are created.
 
+-  **HsmEventDispatcherArduino**
+
+   -  dispatches hsm events every time dispatchEvents() method is called in Arduino's loop() function. No additional
+      threads are created.
+
+-  **HsmEventDispatcherFreeRTOS**
+
+   -  internally starts FreeRTOS task and uses it to dispatch HSM events
+
 Since these dispatchers have dependencies on external libraries and only
-one of them is usually need, it's possible to disable them from
+one of them is usually needed, you need to explicitly enable them for
 compilation using these CMake options:
 
--  HSMBUILD_DISPATCHER_GLIB
--  HSMBUILD_DISPATCHER_GLIBMM
--  HSMBUILD_DISPATCHER_STD
--  HSMBUILD_DISPATCHER_QT
-
+- HSMBUILD_DISPATCHER_GLIB
+- HSMBUILD_DISPATCHER_GLIBMM
+- HSMBUILD_DISPATCHER_STD
+- HSMBUILD_DISPATCHER_QT
+- HSMBUILD_DISPATCHER_FREERTOS
 
 HsmEventDispatcherSTD
 ---------------------
@@ -93,7 +142,7 @@ not interfere with existing event loops from other frameworks. If
 desirable it's also possible to use HsmEventDispatcherSTD as a
 replacement of your application main loop. To do so you need to call
 HsmEventDispatcherSTD::join() to prevent main thread from exiting. For
-reference see :repo-link:`/examples/00_helloworld_std.cpp`.
+reference see :repo-link:`/examples/00_helloworld/00_helloworld_std.cpp`.
 
 
 HsmEventDispatcherGlib
@@ -147,6 +196,72 @@ are executed on the same thread where event loop is running (usually
 main thread).
 
 
+
+HsmEventDispatcherArduino
+-------------------------
+
+Dispatching  is done by periodically calling dispatchEvents() in the Arduino's loop() function. All transitions and callbaks
+are processed within it. Therefore it's advised to avoid using blocking operations inside HSM callbacks
+to make your software more responsive. Instead, utilization of async APIs is highly recommended.
+When possible, try replacing calls to delay() with HSM timeouts.
+
+.. note:: It's advised to allocate instances of dispatcher and HSM on heap.
+
+Compiling
+~~~~~~~~~
+
+Arduino build is not supported in current CMake configuration. Recommended way of including hsmcpp
+for Arduino software is by using `PlatformIO IDE <https://platformio.org/platformio-ide>`__
+and `PlatformIO package <https://registry.platformio.org/libraries/igor-krechetov/hsmcpp>`__.
+
+
+HsmEventDispatcherFreeRTOS
+--------------------------
+
+HsmEventDispatcherFreeRTOS utilizes a custom FreeRTOS Task to handle HSM events and callbacks.
+Task is created and started during call to dispatcher's initialize()API.
+
+.. note:: Creation and initialization of HSM and dispatcher should  be done inside of a Task and not main() function.
+
+
+Compiling
+~~~~~~~~~
+
+hsmcpp library musts be compiled as part of your application's build. Make sure to set **HSMBUILD_FREERTOS_ROOT**
+build option and specify path to your FreeRTOS root directory.
+For reference see :repo-link:`/examples/08_freertos`
+
+
+FreeRTOS configuration file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Due to the specifics of the platfrom, you would usually need a FreeRTOS configuration file.
+If you don't care much about specific settings, hsmcpp library already includes a default
+configuration (though I do recommend to review it to avoid any unexpected behavior of your code).
+In case a custom configuration is needed, it can be specified using **HSMBUILD_FREERTOS_CONFIG_FILE_DIRECTORY**
+build opion. It should point to a folder containing your `FreeRTOSConfig.h <https://www.freertos.org/a00110.html>`__ file.
+
+.. warning:: FreeRTOSConfig.h included in hsmcpp repository was tested only with POSIX simulation of FreeRTOS. It should be
+             treated only as a reference and it's your responsibility to provide correct config for your specific HW.
+
+Additionally, following FreeRTOS features must be enabled:
+
+- INCLUDE_xTaskGetCurrentTaskHandle = 1
+- configUSE_TASK_NOTIFICATIONS = 1
+- configUSE_TIMERS = 1
+- configUSE_MUTEXES = 1
+- configSUPPORT_DYNAMIC_ALLOCATION = 1
+
+If you are using interrupts (ISR) in your code, you must provide implementation for
+xPortIsInsideInterrupt() API (usually provided by your FreeRTOS port; defined in portmacro.h). In case this
+API is not available and your are not going to interact with HSM from within interrupts
+handler, then you can enable default implementation of xPortIsInsideInterrupt() by turning
+on **BUILD_FREERTOS_DEFAULT_ISR_DETECT** build option (default implementation simply always returns **FALSE**).
+
+.. warning:: Using this option will make most calls to hsmcpp API from ISR unsafe and will result in undefined behavior (most often memory corruption and crash).
+
+
+
 Implementing custom dispatchers
 ===============================
 
@@ -176,3 +291,5 @@ on how to implement your own:
 -  :repo-link:`/src/HsmEventDispatcherGLibmm.cpp`
 -  :repo-link:`/src/HsmEventDispatcherSTD.cpp`
 -  :repo-link:`/src/HsmEventDispatcherQt.cpp`
+-  :repo-link:`/src/HsmEventDispatcherArduino.cpp`
+-  :repo-link:`/src/HsmEventDispatcherFreeRTOS.cpp`
