@@ -3,6 +3,19 @@
     white-space: normal;
 }
 
+.api-table-func-separator {
+    line-height: 1px;
+    border-bottom: 1px solid rgb(222, 228, 240);
+    margin: 0px;
+    padding: 0px;
+}
+
+.api-table-func-return {
+    text-align: right;
+    width: 20%;
+    padding-right: 7px;
+}
+
 
 /* .wy-menu-vertical ul:last-of-type {
     border-top: solid white 1px;

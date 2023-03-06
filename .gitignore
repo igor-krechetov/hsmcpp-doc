@@ -1,2 +1,6 @@
+.vscode
 build
+_build
 _gen
+source/api
+source/Doxyfile

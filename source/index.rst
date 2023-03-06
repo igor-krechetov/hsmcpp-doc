@@ -14,8 +14,9 @@ hsmcpp Documentation
 .. note::
    This project is under active development.
 
+
 .. mdinclude:: ./hsmcpp/README.md
-   :end-line: 117
+    :end-line: 117
 
 .. toctree::
    :maxdepth: 4
@@ -25,9 +26,15 @@ hsmcpp Documentation
    getting-started/getting-started
    features/features
    platforms/platforms
-   api/api
    code-generation/code-generation
    tools/tools
+
+.. toctree::
+   :caption: API Reference
+   :hidden:
+
+   api/api
+
 
 .. toctree::
    :maxdepth: 4

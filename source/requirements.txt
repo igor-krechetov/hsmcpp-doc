@@ -1,7 +1,10 @@
 sphinx_rtd_theme==1.2.0
 m2r2==0.3.2
-sphinx==5.3.0
+# sphinx==5.3.0
+sphinx==4.5.0
 readthedocs-sphinx-search==0.1.1
 sphinxemoji==0.2.0
 sphinxcontrib.plantuml==0.24.1
 sphinx-sitemap==2.4.0
+breathe==4.35.0
+exhale==0.3.6

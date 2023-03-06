@@ -7,13 +7,20 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import os
 import re
+import subprocess
+import shutil
+import sys
+from textwrap import dedent
+from exhale import utils
+from bs4 import BeautifulSoup
+
 
 project = 'HSMCPP'
 copyright = '2021, Igor Krechetov'
 author = 'Igor Krechetov'
-# release = '0.26.0'
 release = None
 version = 'latest'
+on_rtd = os.environ.get('READTHEDOCS') == 'True'
 
 # -- Read version from hsmcpp sources ---------------------------------------
 with open("./hsmcpp/CHANGELOG.md", "r") as f:
@@ -35,9 +42,9 @@ if release is None:
     exit(1)
 
 
-# -- PlantUML Integration ---------------------------------------------------
-on_rtd = os.environ.get('READTHEDOCS') == 'True'
+from subprocess import call
 
+# -- PlantUML Integration ---------------------------------------------------
 if on_rtd:
     plantuml = 'java -Djava.awt.headless=true -jar /usr/share/plantuml/plantuml.jar'
 else:
@@ -45,35 +52,58 @@ else:
 
 plantuml_output_format = 'png'
 
+# -- Doxygen ----------------------------------------------------------------
+sourcePath = os.path.dirname(os.path.realpath(__file__))
+buildDir = f"{sourcePath}/_build"
+
+shutil.copy("./Doxyfile.in", "./Doxyfile")
+try:
+    os.mkdir(buildDir)
+except:
+    print(f"{buildDir} already exists")
+
+with open("./Doxyfile", "a") as fDoxygenConfig:
+    # Tell doxygen to output wherever breathe is expecting things
+    extraConfig = [f"OUTPUT_DIRECTORY = \"{buildDir}/doxygen\"\n",
+                   # Tell doxygen to strip the path names (RTD builds produce long abs paths...)
+                   f"STRIP_FROM_PATH  = \"{sourcePath}/hsmcpp\"\n"]
+    fDoxygenConfig.writelines(extraConfig)
+
+subprocess.call('doxygen ./Doxyfile', cwd=f"{sourcePath}", shell=True)
+# shutil.rmtree(f"{sourcePath}/../build/doxygen", ignore_errors=True)
+# shutil.move(f"{sourcePath}/hsmcpp/doxygen", f"{sourcePath}/../build")
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.extlinks', 'sphinxemoji.sphinxemoji', 'm2r2', 'sphinxcontrib.plantuml', 'sphinx_sitemap']
+extensions = ['sphinx.ext.extlinks', 'sphinxemoji.sphinxemoji', 'm2r2', 'sphinxcontrib.plantuml', 'sphinx_sitemap', 'breathe', 'exhale', 'sphinx.ext.autodoc', 'sphinx.ext.doctest']
 
 templates_path = ['_templates']
 exclude_patterns = ['hsmcpp']
-
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
-# html_theme = 'alabaster'
 html_static_path = ['_static']
 html_extra_path = ["_seo"]
 
 # https://stackoverflow.com/questions/56336234/build-fail-sphinx-error-contents-rst-not-found
 master_doc = 'index'
 
-html_css_files = [
-    'css/custom.css',
-]
+html_css_files = ['css/custom.css']
 
-html_theme_options = {
-    'navigation_depth': 4,
-    'titles_only': True
-}
+# html_theme_options = {
+#     'navigation_depth': 4,
+#     'titles_only': True
+# }
+
+# Tell sphinx what the primary language being documented is.
+primary_domain = 'cpp'
+
+pygments_style = "sphinx"
+
+html_show_sourcelink = False
 
 # -- extlinks -------------------------------------------------
 extlinks = {'repo-link': ('https://github.com/igor-krechetov/hsmcpp/blob/main%s', '%s')}
@@ -81,3 +111,155 @@ extlinks = {'repo-link': ('https://github.com/igor-krechetov/hsmcpp/blob/main%s'
 # -- sphinx_sitemap -------------------------------------------------
 html_baseurl = 'https://hsmcpp.readthedocs.io/'
 sitemap_url_scheme = "{lang}{version}{link}"
+
+# -- breathe --------------------------------------------------------
+breathe_default_project = "hsmcpp"
+breathe_projects = {'hsmcpp': './_build/doxygen/xml'}
+breathe_separate_member_pages = True
+
+# -- exhale ---------------------------------------------------------
+def specificationsForKind(kind):
+    '''
+    For a given input ``kind``, return the list of reStructuredText specifications
+    for the associated Breathe directive.
+    '''
+    # Change the defaults for .. doxygenclass:: and .. doxygenstruct::
+    if kind == "class" or kind == "struct":
+        return [
+          ":members:",
+          ":undoc-members:",
+          ":allow-dot-graphs:"
+        ]
+    # Change the defaults for .. doxygenenum::
+    elif kind == "enum":
+        return [":no-link:"]
+    # An empty list signals to Exhale to use the defaults
+    else:
+        return []
+
+
+def prepareHtmlString(value):
+    return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+# exhale and breathe does not seem to provide a way to generate TOC for a class in a similar way as Doxygen does it.
+# so we'll parse generated page and inject TOC ourself.
+# NOTE: probably will not work with anything except sphinx_rtd_theme, but can be easily adapted (if needed)
+def onHtmlPageContext(app, pagename, templatename, context, doctree):
+    if pagename.startswith("api/class"):
+        soup = BeautifulSoup(context['body'], 'html.parser')
+        # templates are generated as separate entities so we need to ignore them
+        templates = ["Args", "HsmHandlerClass"]
+        # markers to parse different types
+        sectionMarkers = [{"title": "Public Types", "type": "enum", "class": "cpp enum-class", "prefix": "enum "},
+                          {"title": "Public Member Functions", "type": "function", "class": "cpp function", "prefix": ""}]
+        newContent = ""
+
+        for section in sectionMarkers:
+            currentSectionBody = ""
+
+            for el in soup.find_all(class_=section["class"]):
+                elName = el.find(class_="sig-name descname")
+                if elName and elName.get_text() not in templates:
+                    elObject = el.find("dt", class_="sig sig-object cpp")
+                    elLink = el.find("a", class_="headerlink")
+
+                    if elObject and elLink:
+                        strReturn = ""
+                        strName = ""
+                        strArgs = ""
+                        temp = ""
+                        skipNode = True
+
+                        if section["type"] == "function":
+                            for elNamePart in elObject.findChildren(recursive=False):
+                                if "class" in elNamePart.attrs:
+                                    if skipNode == False:
+                                        if "sig-name" in elNamePart["class"]:
+                                            strReturn = prepareHtmlString(temp)
+                                            temp = ""
+                                        elif "sig-paren" in elNamePart["class"]:
+                                            if len(strName) == 0:
+                                                strName = prepareHtmlString(temp)
+                                                temp = ""
+                                            else:
+                                                strArgs = f" {prepareHtmlString(temp)})"
+                                                break
+
+                                        temp += elNamePart.get_text()
+                                    elif "target" in elNamePart["class"]:
+                                        skipNode = False
+                        elif section["type"] == "enum":
+                            strName = elName.get_text()
+
+                        if len(strName) > 0:
+                            currentSectionBody += f"<tr><td class=\"api-table-func-return\">{section['prefix']}{strReturn}</td><td><a href=\"{elLink['href']}\">{strName}</a>{strArgs}</td></tr>"
+                            currentSectionBody += "<tr><td class=\"api-table-func-separator\" colspan=\"2\">&nbsp;</td></tr>"
+
+            if len(currentSectionBody) > 0:
+                newContent += f"<div class=\"contents local topic\"><p class=\"topic-title\">{section['title']}</p>"
+                newContent += "<table>"
+                newContent += currentSectionBody
+                newContent += '</table></div><br />'
+
+        # insert TOC before main body
+        if soup.find(id="nested-relationships"):
+            marker = '<section id="nested-relationships">'
+        elif soup.find(id="inheritance-relationships"):
+            marker = '<section id="inheritance-relationships">'
+        else:
+            marker = '<section id="class-documentation">'
+
+        context['body'] = context['body'].replace(marker, newContent + "\n" + marker)
+
+
+def setup(app):
+    # install context callback
+    app.connect('html-page-context', onHtmlPageContext)
+
+
+exhale_args = {
+    # Mandatory arguments
+    "containmentFolder":     "./api",
+    "rootFileName":          "api.rst",
+    "doxygenStripFromPath":  "./hsmcpp",
+    # Optional arguments
+    "rootFileTitle":         "API Reference",
+    "createTreeView":        True,
+    # Doxygen arguments
+    "exhaleExecutesDoxygen": False,
+    # "exhaleSilentDoxygen": False,
+    # "exhaleDoxygenStdin": dedent('''
+    #     INPUT   = ./hsmcpp/include
+    #     EXCLUDE_PATTERNS = FreeRTOSConfig.h FreeRtosPort.hpp logging.hpp */os/*
+    #     EXCLUDE_SYMBOLS = hsmcpp::HsmEventDispatcherBase::TimerInfo hsmcpp::HsmEventDispatcherBase::EnqueuedEventInfo HsmEventDispatcherArduino::RunningTimerInfo HsmEventDispatcherSTD::RunningTimerInfo
+    #     EXTRACT_PRIVATE = NO
+    #     HIDE_UNDOC_MEMBERS = NO
+    #     HIDE_UNDOC_CLASSES = YES
+    #     INTERNAL_DOCS = NO
+    #     XML_PROGRAMLISTING = YES
+    # '''),
+    "customSpecificationsMapping": utils.makeCustomSpecificationsMapping(
+        specificationsForKind
+    ),
+    ############################################################################
+    # Main library page layout configuration.                                  #
+    ############################################################################
+    # "afterTitleDescription": dedent(u'''
+    # '''),
+    # "afterHierarchyDescription": dedent('''
+    # '''),
+    "fullApiSubSectionTitle": "API List",
+    # "afterBodySummary": dedent('''
+    # '''),
+    ############################################################################
+    # Individual page layout configuration.                                    #
+    ############################################################################
+    "contentsDirectives": True,
+    "contentsTitle": "Content",
+    "kindsWithContentsDirectives": ["class", "file", "namespace", "struct"],
+    "includeTemplateParamOrderList": True,
+    ############################################################################
+    "verboseBuild": True
+}
+
