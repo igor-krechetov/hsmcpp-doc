@@ -94,6 +94,8 @@ example user want to cancel operation). In this case you can use
 .. note:: Current ongoing transition can't be canceled.
 
 
+.. _features-transitions-selftransitions:
+
 Self transitions
 ================
 

@@ -149,20 +149,32 @@ def onHtmlPageContext(app, pagename, templatename, context, doctree):
     if pagename.startswith("api/class"):
         soup = BeautifulSoup(context['body'], 'html.parser')
         # templates are generated as separate entities so we need to ignore them
-        templates = ["Args", "HsmHandlerClass"]
+        # ignoreItems = ["Args", "HsmHandlerClass"]
+        ignoreItems = []
         # markers to parse different types
         sectionMarkers = [{"title": "Public Types", "type": "enum", "class": "cpp enum-class", "prefix": "enum "},
                           {"title": "Public Member Functions", "type": "function", "class": "cpp function", "prefix": ""}]
         newContent = ""
+        separator = "<tr><td class=\"api-table-func-separator\" colspan=\"2\">&nbsp;</td></tr>"
 
         for section in sectionMarkers:
             currentSectionBody = ""
+            # insert separators between functions
+            marker = f"<dl class=\"{section['class']}\">"
+            context['body'] = context['body'].replace(marker, "<hr />" + marker)
 
             for el in soup.find_all(class_=section["class"]):
                 elName = el.find(class_="sig-name descname")
-                if elName and elName.get_text() not in templates:
+                if elName and elName.get_text() not in ignoreItems:
                     elObject = el.find("dt", class_="sig sig-object cpp")
+                    elDescription = el.find("dd")
+                    strDescription = ""
                     elLink = el.find("a", class_="headerlink")
+
+                    if elDescription:
+                        for par in elDescription.findChildren(recursive=False):
+                            strDescription = par.get_text()
+                            break
 
                     if elObject and elLink:
                         strReturn = ""
@@ -193,13 +205,15 @@ def onHtmlPageContext(app, pagename, templatename, context, doctree):
                             strName = elName.get_text()
 
                         if len(strName) > 0:
-                            currentSectionBody += f"<tr><td class=\"api-table-func-return\">{section['prefix']}{strReturn}</td><td><a href=\"{elLink['href']}\">{strName}</a>{strArgs}</td></tr>"
-                            currentSectionBody += "<tr><td class=\"api-table-func-separator\" colspan=\"2\">&nbsp;</td></tr>"
+                            currentSectionBody += f"<tr><td class=\"api-table-func-return\">{section['prefix']}{strReturn}</td><td><a class=\"api-table-func-url\" href=\"{elLink['href']}\">{strName}</a>{strArgs}</td></tr>"
+                            if len(strDescription) > 0:
+                                currentSectionBody += f"<tr><td>&nbsp;</td><td class=\"api-table-func-brief\">{strDescription}</td></tr>"
+                            currentSectionBody += separator
 
             if len(currentSectionBody) > 0:
                 newContent += f"<div class=\"contents local topic\"><p class=\"topic-title\">{section['title']}</p>"
                 newContent += "<table>"
-                newContent += currentSectionBody
+                newContent += separator + currentSectionBody
                 newContent += '</table></div><br />'
 
         # insert TOC before main body

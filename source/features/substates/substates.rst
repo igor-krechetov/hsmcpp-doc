@@ -50,6 +50,7 @@ Adding a new substate is done using `registerSubstate() <../API#registersubstate
 Note that **ParentState** must be a part of **MyStates** enum as any
 other state.
 
+.. _features-substates-entry_points:
 
 Entry Points
 ============
