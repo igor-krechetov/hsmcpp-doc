@@ -21,6 +21,9 @@ SKIP_FUNCTION_MACROS   = NO
 PREDEFINED             = DOXYGEN_DOCUMENTATION_BUILD
 PREDEFINED            += DOXYGEN_SHOULD_SKIP_THIS
 
+HAVE_DOT = NO
+SORT_MEMBER_DOCS = NO
+
 INPUT   = ./hsmcpp/include
 EXCLUDE_PATTERNS = FreeRTOSConfig.h FreeRtosPort.hpp logging.hpp */os/*
 EXCLUDE_SYMBOLS = hsmcpp::HsmEventDispatcherBase::TimerInfo hsmcpp::HsmEventDispatcherBase::EnqueuedEventInfo HsmEventDispatcherArduino::RunningTimerInfo HsmEventDispatcherSTD::RunningTimerInfo DEF_CONSTRUCTOR DEF_OPERATOR_ASSIGN HsmTransitionCallbackPtr_t HsmTransitionConditionCallbackPtr_t HsmTransitionFailedCallbackPtr_t HsmStateChangedCallbackPtr_t HsmStateEnterCallbackPtr_t HsmStateExitCallbackPtr_t INVALID_ID

@@ -125,6 +125,8 @@ compilation using these CMake options:
 - HSMBUILD_DISPATCHER_QT
 - HSMBUILD_DISPATCHER_FREERTOS
 
+.. _platforms-dispatcher-std:
+
 HsmEventDispatcherSTD
 ---------------------
 
@@ -144,6 +146,7 @@ replacement of your application main loop. To do so you need to call
 HsmEventDispatcherSTD::join() to prevent main thread from exiting. For
 reference see :repo-link:`/examples/00_helloworld/00_helloworld_std.cpp`.
 
+.. _platforms-dispatcher-glib:
 
 HsmEventDispatcherGlib
 ----------------------
@@ -161,6 +164,8 @@ To use default GLib main loop just use default constructor:
 .. code-block::  c++
 
    HsmEventDispatcherGLib();
+
+.. _platforms-dispatcher-glibmm:
 
 HsmEventDispatcherGlibmm
 ------------------------
@@ -187,6 +192,8 @@ multiple ones(they will anyway handle events sequentially since they use
 same Glib main loop).
 
 
+.. _platforms-dispatcher-qt:
+
 HsmEventDispatcherQt
 --------------------
 
@@ -196,6 +203,7 @@ are executed on the same thread where event loop is running (usually
 main thread).
 
 
+.. _platforms-dispatcher-arduino:
 
 HsmEventDispatcherArduino
 -------------------------
@@ -214,6 +222,8 @@ Arduino build is not supported in current CMake configuration. Recommended way o
 for Arduino software is by using `PlatformIO IDE <https://platformio.org/platformio-ide>`__
 and `PlatformIO package <https://registry.platformio.org/libraries/igor-krechetov/hsmcpp>`__.
 
+
+.. _platforms-dispatcher-freertos:
 
 HsmEventDispatcherFreeRTOS
 --------------------------

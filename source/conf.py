@@ -128,7 +128,6 @@ def specificationsForKind(kind):
         return [
           ":members:",
           ":undoc-members:",
-          ":allow-dot-graphs:"
         ]
     # Change the defaults for .. doxygenenum::
     elif kind == "enum":
