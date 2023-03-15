@@ -1,8 +1,3 @@
-.. hsmcpp documentation master file, created by
-   sphinx-quickstart on Tue Jan  3 12:37:41 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 ##################################
 hsmcpp Documentation
 ##################################
@@ -42,6 +37,7 @@ hsmcpp Documentation
    :caption: Other
    :hidden:
 
+   Repository <https://github.com/igor-krechetov/hsmcpp>
    changelog
    license
 
