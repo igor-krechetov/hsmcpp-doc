@@ -11,7 +11,7 @@ hsmcpp Documentation
 
 
 .. mdinclude:: ./hsmcpp/README.md
-    :end-line: 117
+    :end-line: 124
 
 .. toctree::
    :maxdepth: 4
