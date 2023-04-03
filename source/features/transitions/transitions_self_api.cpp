@@ -9,6 +9,6 @@ hsm.registerSelfTransition(MyStates::StateA,
 hsm.registerSelfTransition(MyStates::StateA,
                             MyEvents::EVENT_1,
                             TransitionType::INTERNAL_TRANSITION,
-                            [](const VariantVector_t& args){ ... },
-                            [](const VariantVector_t& args){ ... return true; },
+                            [](const hsmcpp::VariantVector_t& args){ ... },
+                            [](const hsmcpp::VariantVector_t& args){ ... return true; },
                             true);

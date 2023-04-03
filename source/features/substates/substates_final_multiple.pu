@@ -1,0 +1,27 @@
+@startuml
+
+[*] --> Parent
+Parent --> StateC: E2
+Parent --> StateD: E4
+
+state Parent {
+    state Final1 <<end>>
+    state Final2 <<end>>
+
+    [*] --> StateA
+    StateA -> StateB: E1
+
+    StateA --> Final1: E2
+    note left of Final1
+        final state **re-emits**
+        **E2** event on entry
+    end note
+
+    StateB --> Final2: E3
+    note right of Final2
+        final state **emits**
+        **E4** event on entry
+    end note
+}
+
+@enduml

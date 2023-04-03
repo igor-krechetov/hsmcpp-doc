@@ -4,9 +4,6 @@
 Timers
 ##################################
 
-.. warning:: TODO: fix API links
-
-
 Overview
 ========
 
@@ -20,16 +17,16 @@ additional code. Some common examples of timers usage are:
 Usage
 =====
 
-To use a timer in your HSM you first need to register it using this API:
+To use a timer in your HSM you first need to register it using :hsmcpp:`HierarchicalStateMachine::registerTimer` API:
 
 .. code-block::  c++
 
-   void registerTimer(const TimerID_t timerID, const HsmEventEnum event);
-
--  timerID - can be any value, but must be unique withing this instance
-   of HSM;
--  event - event which should be triggered when timer expires.
+   hsm.registerTimer(MyTimers::TIMER_1, MyEvents::ON_TIMER_1);
 
 Interacting with timers is part of :ref:`features-states-actions` so
-registerStateAction() API should be used. You can start, stop or restart
-any of the registered timers.
+:hsmcpp:`HierarchicalStateMachine::registerStateAction` API should be used. You can also start, stop or restart
+any of the registered timers directly using:
+
+- :hsmcpp:`HierarchicalStateMachine::startTimer`
+- :hsmcpp:`HierarchicalStateMachine::stopTimer`
+- :hsmcpp:`HierarchicalStateMachine::restartTimer`

@@ -7,9 +7,6 @@ Transitions
 .. contents::
    :local:
 
-.. warning:: TODO: fix API links
-
-
 Overview
 ========
 
@@ -44,13 +41,12 @@ behavior.**
 Usage
 =====
 
-To register transition use
-`registerTransition() <../API#registertransition>`__ API:
+To register transition use :hsmcpp:`HierarchicalStateMachine::registerTransition` API:
 
 .. literalinclude:: transitions_api.cpp
    :language: c++
 
-Call `transition() <../API#transition>`__ API to trigger a transition.
+Call :hsmcpp:`HierarchicalStateMachine::transition` API to trigger a transition.
 
 .. code-block::  c++
 
@@ -59,8 +55,7 @@ Call `transition() <../API#transition>`__ API to trigger a transition.
 Normally if you try to send event which is not handled in current state
 it will be just ignored by HSM without any notification. But sometimes
 you might want to know in advance if transition would be possible or
-not. You can use
-`isTransitionPossible() <../API#istransitionpossible>`__ API for that.
+not. You can use :hsmcpp:`HierarchicalStateMachine::isTransitionPossible` API for that.
 It will check if provided event will be accepted by HSM taking in consideration:
 
 -  current state
@@ -68,7 +63,7 @@ It will check if provided event will be accepted by HSM taking in consideration:
 -  conditions assigned to transitions
 
 .. note:: It is still possible for HSM to reject your event if after
-          isTransitionPossible() some other thread will manage to trigger
+          :hsmcpp:`HierarchicalStateMachine::isTransitionPossible` some other thread will manage to trigger
           another transition be careful when using it in multi-threaded
           environment.
 
@@ -83,8 +78,8 @@ time they will be internally queued and executed sequentially.
 Potentially it's possible to have multiple events queued when you need
 to send a new event which will make previous events obsolete (for
 example user want to cancel operation). In this case you can use
-`transitionWithQueueClear() <../API#transitionwithqueueclear>`__ or
-`transitionEx() <../API#transitionex>`__ to clear pending events:
+:hsmcpp:`HierarchicalStateMachine::transitionWithQueueClear` or
+:hsmcpp:`HierarchicalStateMachine::transitionEx` to clear pending events:
 
 .. code-block::  c++
 
@@ -106,30 +101,28 @@ are the same.
    :align: center
    :alt: Simple self-transition
 
-To register a self-transition use
-`registerSelfTransition() <../API#registerselftransition>`__ API:
+To register a self-transition use :hsmcpp:`HierarchicalStateMachine::registerSelfTransition` API:
 
 .. literalinclude:: transitions_self_api.cpp
    :language: c++
 
-.. note:: Though using registerSelfTransition() is a recommended way for defining self-transitions, you can also use
-          `registerTransition() <../API#registertransition>`__ API. Keep in mind that in this case transition type
+.. note:: Though using :hsmcpp:`HierarchicalStateMachine::registerSelfTransition` is a recommended way for defining self-transitions, you can also use
+          :hsmcpp:`HierarchicalStateMachine::registerTransition` API. Keep in mind that in this case transition type
           will be automatically set to **"external"**.
 
-There are 2 types of self-transitions:
+There are 2 types of self-transitions (see :hsmcpp:`HierarchicalStateMachine::TransitionType` enum):
 
--  **external**
-
-   -  During external transition, state machine exits current active
-      state and returns back to it right away. This results in all
-      entry, exit and state actions being invoked. This also affects
-      substates if current state contains any.
-
--  **internal**
-
-   -  An internal transition does not allow the exit and entry actions
-      to be executed. So only transition callback will be executed
-      without any impact on active states.
+=============== ================================================================
+Transition Type Description
+=============== ================================================================
+**external**    During external transition, state machine exits current active
+                state and returns back to it right away. This results in all
+                entry, exit and state actions being invoked. This also affects
+                substates if current state contains any.
+**internal**    An internal transition does not allow the exit and entry actions
+                to be executed. So only transition callback will be executed
+                without any impact on active states.
+=============== ================================================================
 
 Difference between these two types can be demonstrated with this
 example:
@@ -180,7 +173,7 @@ still handle them in a deterministic and predictable manner:
    -  internal transitions between substates always have the highest
       priority. Outer transitions **will be ignored**;
 
-Let's check the following example:
+Let's look at the following example:
 
 .. uml:: ./transition_priorities.pu
    :align: center
@@ -206,7 +199,7 @@ Synchronous transitions
 
 .. warning:: It's **strongly discouraged** to usage synchronous transitions in production code. They were added mostly for testing purposes, since async unit tests are a headache to deal with.
 
-Transitions can be executed synchronously using transitionEx() API.
+Transitions can be executed synchronously using :hsmcpp:`HierarchicalStateMachine::transitionEx` API.
 Please keep these things in mind when using synchronous transitions:
 
 - Don't execute synchronous transitions from HSM callbacks:

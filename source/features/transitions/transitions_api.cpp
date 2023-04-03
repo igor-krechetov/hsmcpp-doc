@@ -8,6 +8,6 @@ hsm.registerTransition(MyStates::StateA,
 hsm.registerTransition(MyStates::StateA,
                         MyStates::StateB,
                         MyEvents::EVENT_1,
-                        [](const VariantVector_t& args){ ... },
-                        [](const VariantVector_t& args){ ... return true; },
+                        [](const hsmcpp::VariantVector_t& args){ ... },
+                        [](const hsmcpp::VariantVector_t& args){ ... return true; },
                         true);

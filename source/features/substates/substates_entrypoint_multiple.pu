@@ -1,0 +1,10 @@
+@startuml
+
+[*] -> ParentState
+
+state ParentState {
+    [*] --> StateA
+    [*] --> StateB
+}
+
+@enduml

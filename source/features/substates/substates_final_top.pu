@@ -1,0 +1,12 @@
+@startuml
+
+[*] -> Idle
+Idle -> MovingToPickup : Move to pickup position
+MovingToPickup -> PickingUp : Reached pickup position
+PickingUp --> MovingToDropoff : Picked up item
+MovingToDropoff -left-> DroppingOff : Reached drop-off position
+DroppingOff -left-> MovingToHome : Dropped off item
+MovingToHome --> Final : Reached home position
+Final -> [*]
+
+@enduml

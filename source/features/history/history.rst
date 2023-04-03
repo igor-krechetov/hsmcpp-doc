@@ -7,8 +7,6 @@ History
 .. contents::
    :local:
 
-.. warning:: TODO: Add Usage section
-
 Overview
 ========
 
@@ -115,3 +113,18 @@ as it's initial version:
 .. uml:: ./history_deep_01.pu
    :align: center
    :alt: Sample HSM transition
+
+
+Usage
+=====
+
+To register history state you can use :hsmcpp:`HierarchicalStateMachine::registerHistory` API:
+
+.. literalinclude:: history_api.cpp
+   :language: c++
+
+After that you can register a transition to a history state as you would do with any regular state using :hsmcpp:`HierarchicalStateMachine::registerTransition` API:
+
+.. code-block::  c++
+
+   hsm.registerTransition(MyStates::StateC, MyStates::History1, MyEvents::EVENT_1);

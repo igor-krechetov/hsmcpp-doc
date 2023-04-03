@@ -15,16 +15,15 @@ Overview
    :align: center
    :alt: Simple state example
 
-States are defined as an enum:
+States are defined using `hsmcpp::StateID_t <../../api/api.html#typedefs>`__ type. Recommended way is to put definitions into a namespace:
 
 .. code-block::  c++
 
-   enum class MyStates
-   {
-       StateA,
-       StateB,
-       StateC
-   };
+   namespace MyStates {
+      constexpr hsmcpp::StateID_t StateA = 0;
+      constexpr hsmcpp::StateID_t StateB = 1;
+      constexpr hsmcpp::StateID_t StateC = 2;
+   }
 
 
 State callbacks are optional and include:
@@ -48,14 +47,14 @@ State callbacks are optional and include:
 Usage
 =====
 
-Assuming we create HSM as a separate object, here are possible ways to
-register a state:
+Adding a new state is done using :hsmcpp:`HierarchicalStateMachine::registerState` API. Assuming we create
+HSM as a separate object, here are possible ways to register a state:
 
 .. literalinclude:: state_api.cpp
    :language: c++
 
-Note that if you explicitly need to pass nullptr (as in the last
-example) you will need to provide class name as a template parameter.
+Note that specifying template parameter for registerState() function is optional, if you explicitly need to
+pass nullptr (as in the last example) you will need to provide it.
 
 
 .. _features-states-actions:
@@ -67,16 +66,16 @@ Besides implementing logic inside HSM callbacks it's possible to define
 some operations as state actions. These actions are built-in commands
 that are executed automatically based on HSM activity.
 
-Actions could be added using:
+Actions could be added using :hsmcpp:`HierarchicalStateMachine::registerStateAction` API.
 
 .. code-block::  c++
 
-   bool registerStateAction(const HsmStateEnum state,
-                            const StateActionTrigger actionTrigger,
-                            const StateAction action,
-                            Args... args);
+   hsm.registerStateAction(MyStates::StateA,
+                           hsmcpp::StateActionTrigger::ON_STATE_ENTRY,
+                           hsmcpp::StateAction::START_TIMER,
+                           MyTimers::Timer1, 1000, false);
 
-At the moment two triggers are supported:
+At the moment two triggers are supported (see :hsmcpp:`StateActionTrigger` enum):
 
 .. code-block::  c++
 
@@ -85,12 +84,17 @@ At the moment two triggers are supported:
        ON_STATE_EXIT
    };
 
--  *StateActionTrigger::ON_STATE_ENTRY* will execute action when *entering* a state;
--  *StateActionTrigger::ON_STATE_EXIT* will execute action when *exiting* a state.
+
+======================================= ===============================================
+Trigger                                 Description
+======================================= ===============================================
+**StateActionTrigger.ON_STATE_ENTRY**   will execute action when *entering* a state;
+**StateActionTrigger:ON_STATE_EXIT**    will execute action when *exiting* a state.
+======================================= ===============================================
 
 .. note:: actions will be executed *only if* ongoing transition wasn't blocked by entry/exit callbacks.
 
-Supported actions are:
+Supported actions are defined in :hsmcpp:`StateAction` enum:
 
 ==============================  ============================================= ==========================================================================================
 Action                          Arguments                                     Description

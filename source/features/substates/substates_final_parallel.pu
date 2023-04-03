@@ -1,0 +1,19 @@
+@startuml
+
+[*] --> Idle
+Idle --> WateringPlants: LOW_SOIL_MOISTURE_LEVEL
+WateringPlants --> Idle: DONE
+
+state WateringPlants {
+    [*] -> TurningOnPump1
+    TurningOnPump1 -> WaitingForHumidityLevel1
+    WaitingForHumidityLevel1 -> TurningOffPump1
+    TurningOffPump1 -> [*]
+    --
+    [*] -> TurningOnPump2
+    TurningOnPump2 -> WaitingForHumidityLevel2
+    WaitingForHumidityLevel2 -> TurningOffPump2
+    TurningOffPump2 -> [*]
+}
+
+@enduml

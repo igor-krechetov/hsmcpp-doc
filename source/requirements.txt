@@ -8,3 +8,4 @@ sphinxcontrib.plantuml==0.24.1
 sphinx-sitemap==2.4.0
 breathe==4.35.0
 exhale==0.3.6
+sphinxcontrib-doxylink==1.12.2

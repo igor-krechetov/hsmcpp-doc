@@ -14,7 +14,6 @@ from textwrap import dedent
 from exhale import utils
 from bs4 import BeautifulSoup
 
-
 project = 'HSMCPP'
 copyright = '2021, Igor Krechetov'
 author = 'Igor Krechetov'
@@ -55,12 +54,18 @@ plantuml_output_format = 'png'
 # -- Doxygen ----------------------------------------------------------------
 sourcePath = os.path.dirname(os.path.realpath(__file__))
 buildDir = f"{sourcePath}/_build"
+apiDir = f"{sourcePath}/api"
 
 shutil.copy("./Doxyfile.in", "./Doxyfile")
 try:
     os.mkdir(buildDir)
 except:
     print(f"{buildDir} already exists")
+
+try:
+    os.mkdir(apiDir)
+except:
+    print(f"{apiDir} already exists")
 
 with open("./Doxyfile", "a") as fDoxygenConfig:
     # Tell doxygen to output wherever breathe is expecting things
@@ -73,10 +78,24 @@ subprocess.call('doxygen ./Doxyfile', cwd=f"{sourcePath}", shell=True)
 # shutil.rmtree(f"{sourcePath}/../build/doxygen", ignore_errors=True)
 # shutil.move(f"{sourcePath}/hsmcpp/doxygen", f"{sourcePath}/../build")
 
+# Due to a bug in sphinxcontrib.doxylink we need to fix generated TAG file
+# plugin doesn't understand template variadic arguments with "..."
+hsmcppTagFile = f"{apiDir}/hsmcpp.tag"
+
+with open(hsmcppTagFile, "r+") as file:
+    text = file.read()
+    text = text.replace("Args...", "Args")
+    file.seek(0)
+    file.write(text)
+    file.truncate()
+
+
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.extlinks', 'sphinxemoji.sphinxemoji', 'm2r2', 'sphinxcontrib.plantuml', 'sphinx_sitemap', 'breathe', 'exhale', 'sphinx.ext.autodoc', 'sphinx.ext.doctest']
+extensions = ['sphinx.ext.extlinks', 'sphinxemoji.sphinxemoji', 'm2r2',
+              'sphinxcontrib.plantuml', 'sphinx_sitemap', 'breathe', 'exhale',
+              'sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinxcontrib.doxylink']
 
 templates_path = ['_templates']
 exclude_patterns = ['hsmcpp']
@@ -108,7 +127,7 @@ html_show_sourcelink = False
 # -- extlinks -------------------------------------------------
 extlinks = {'repo-link': ('https://github.com/igor-krechetov/hsmcpp/blob/main%s', '%s')}
 
-# -- sphinx_sitemap -------------------------------------------------
+# -- sphinx_sitemap ------------------------------------------------
 html_baseurl = 'https://hsmcpp.readthedocs.io/'
 sitemap_url_scheme = "{lang}{version}{link}"
 
@@ -116,6 +135,31 @@ sitemap_url_scheme = "{lang}{version}{link}"
 breathe_default_project = "hsmcpp"
 breathe_projects = {'hsmcpp': './_build/doxygen/xml'}
 breathe_separate_member_pages = True
+
+# -- doxylink ------------------------------------------------------
+doxylink = {
+    'hsmcpp' : ('./source/api/hsmcpp.tag', './api'),
+}
+
+def postprocessDoxylinks(app, pagename, templatename, context, doctree):
+    if (pagename.startswith("api/class") == False) and ("body" in context):
+        contentChanged = False
+        soup = BeautifulSoup(context['body'], 'html.parser')
+        patternUrl = r"/api/(class.*)\.html#(.*)"
+
+        for el in soup.find_all("a", class_="reference external"):
+            # example: ../.././api/classhsmcpp_1_1HierarchicalStateMachine.html#a5f006e704e2958793a03efc4eadcbb6f
+            if ("href" in el.attrs) and ("/api/class" in el["href"]):
+                match = re.search(patternUrl, el["href"])
+                if match:
+                    pageId = match.group(1)
+                    itemId = match.group(2)
+                    el["href"] = el["href"].replace(itemId, f"{pageId}_1{itemId}")
+                    contentChanged = True
+                    # exit(1)
+        if True == contentChanged:
+            context['body'] = str(soup)
+
 
 # -- exhale ---------------------------------------------------------
 def specificationsForKind(kind):
@@ -138,13 +182,13 @@ def specificationsForKind(kind):
 
 
 def prepareHtmlString(value):
-    return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    return value.strip(", ").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
 # exhale and breathe does not seem to provide a way to generate TOC for a class in a similar way as Doxygen does it.
 # so we'll parse generated page and inject TOC ourself.
 # NOTE: probably will not work with anything except sphinx_rtd_theme, but can be easily adapted (if needed)
-def onHtmlPageContext(app, pagename, templatename, context, doctree):
+def postprocessClassFiles(app, pagename, templatename, context, doctree):
     if pagename.startswith("api/class"):
         soup = BeautifulSoup(context['body'], 'html.parser')
         # templates are generated as separate entities so we need to ignore them
@@ -183,23 +227,26 @@ def onHtmlPageContext(app, pagename, templatename, context, doctree):
                         skipNode = True
 
                         if section["type"] == "function":
-                            for elNamePart in elObject.findChildren(recursive=False):
-                                if "class" in elNamePart.attrs:
-                                    if skipNode == False:
-                                        if "sig-name" in elNamePart["class"]:
-                                            strReturn = prepareHtmlString(temp)
-                                            temp = ""
-                                        elif "sig-paren" in elNamePart["class"]:
-                                            if len(strName) == 0:
-                                                strName = prepareHtmlString(temp)
+                            for elNamePart in elObject.contents:
+                                if hasattr(elNamePart, 'attrs'):
+                                    if "class" in elNamePart.attrs:
+                                        if skipNode == False:
+                                            if "sig-name" in elNamePart["class"]:
+                                                strReturn = prepareHtmlString(temp)
                                                 temp = ""
-                                            else:
-                                                strArgs = f" {prepareHtmlString(temp)})"
-                                                break
+                                            elif "sig-paren" in elNamePart["class"]:
+                                                if len(strName) == 0:
+                                                    strName = prepareHtmlString(temp)
+                                                    temp = ""
+                                                else:
+                                                    strArgs = f" {prepareHtmlString(temp)})"
+                                                    break
 
-                                        temp += elNamePart.get_text()
-                                    elif "target" in elNamePart["class"]:
-                                        skipNode = False
+                                            temp += elNamePart.get_text()
+                                        elif "target" in elNamePart["class"]:
+                                            skipNode = False
+                                elif "," in elNamePart.get_text():
+                                    temp += elNamePart.get_text()
                         elif section["type"] == "enum":
                             strName = elName.get_text()
 
@@ -224,11 +271,6 @@ def onHtmlPageContext(app, pagename, templatename, context, doctree):
             marker = '<section id="class-documentation">'
 
         context['body'] = context['body'].replace(marker, newContent + "\n" + marker)
-
-
-def setup(app):
-    # install context callback
-    app.connect('html-page-context', onHtmlPageContext)
 
 
 exhale_args = {
@@ -276,3 +318,13 @@ exhale_args = {
     "verboseBuild": True
 }
 
+
+# -- post-processing ----------------------------------------------------
+def onHtmlPageContext(app, pagename, templatename, context, doctree):
+    postprocessClassFiles(app, pagename, templatename, context, doctree)
+    postprocessDoxylinks(app, pagename, templatename, context, doctree)
+
+
+def setup(app):
+    # install context callback
+    app.connect('html-page-context', onHtmlPageContext)

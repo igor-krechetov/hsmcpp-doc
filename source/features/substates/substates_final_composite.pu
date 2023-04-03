@@ -1,0 +1,25 @@
+@startuml
+
+state "Making toasts" as MT
+state "Eating breakfast" as EB
+
+state "Making coffee" as MC {
+    state "grinding coffee beans" as s1
+    state "heating the water" as s2
+    state "brewing the coffee" as s3
+
+    [*] --> s1
+    s1 --> s2
+    s2 --> s3
+    s3 --> [*]
+    note on link
+        final state emits
+        COFFEE_READY event
+    end note
+}
+
+[*] -> MT
+MT-> MC
+MC -> EB: COFFEE_READY
+
+@enduml
