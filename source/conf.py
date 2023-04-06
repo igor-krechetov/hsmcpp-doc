@@ -8,6 +8,7 @@
 import os
 import re
 import subprocess
+from subprocess import call
 import shutil
 import sys
 from textwrap import dedent
@@ -40,22 +41,12 @@ if release is None:
     print(f"ERROR: hsmcpp version not found or it has incorrect format: '{line}'")
     exit(1)
 
-
-from subprocess import call
-
-# -- PlantUML Integration ---------------------------------------------------
-if on_rtd:
-    plantuml = 'java -Djava.awt.headless=true -jar /usr/share/plantuml/plantuml.jar'
-else:
-    plantuml = '/usr/bin/plantuml'
-
-plantuml_output_format = 'png'
-
-# -- Doxygen ----------------------------------------------------------------
+# -- Environment ------------------------------------------------------------
 sourcePath = os.path.dirname(os.path.realpath(__file__))
 buildDir = f"{sourcePath}/_build"
 apiDir = f"{sourcePath}/api"
 
+# -- Doxygen ----------------------------------------------------------------
 shutil.copy("./Doxyfile.in", "./Doxyfile")
 try:
     os.mkdir(buildDir)
@@ -92,7 +83,6 @@ with open(hsmcppTagFile, "r+") as file:
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
-
 extensions = ['sphinx.ext.extlinks', 'sphinxemoji.sphinxemoji', 'm2r2',
               'sphinxcontrib.plantuml', 'sphinx_sitemap', 'breathe', 'exhale',
               'sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinxcontrib.doxylink']
@@ -124,6 +114,17 @@ pygments_style = "sphinx"
 
 html_show_sourcelink = False
 
+# -- sphinxcontrib.plantuml ---------------------------------------------------
+if on_rtd:
+    # Version of PlantUML on ReadTheDocs is too old, so using our own
+    plantumlBin = f"{sourcePath}/../tools/plantuml.jar"
+    # plantUmlBin = "/usr/share/plantuml/plantuml.jar"
+    plantuml = f"java -Djava.awt.headless=true -jar {plantumlBin}"
+else:
+    plantuml = '/usr/bin/plantuml'
+
+plantuml_output_format = 'png'
+
 # -- extlinks -------------------------------------------------
 extlinks = {'repo-link': ('https://github.com/igor-krechetov/hsmcpp/blob/main%s', '%s')}
 
@@ -138,7 +139,7 @@ breathe_separate_member_pages = True
 
 # -- doxylink ------------------------------------------------------
 doxylink = {
-    'hsmcpp' : ('./source/api/hsmcpp.tag', './api'),
+    'hsmcpp' : (hsmcppTagFile, './api'),
 }
 
 def postprocessDoxylinks(app, pagename, templatename, context, doctree):

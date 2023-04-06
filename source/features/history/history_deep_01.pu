@@ -1,7 +1,5 @@
 @startuml
 
-state StateD
-
 [*] -> StateA
 StateA -> Parent1
 
@@ -10,15 +8,14 @@ state Parent1 {
     StateB -> Parent2
 
     state Parent2 {
+        state StateE #LightGreen
+
         [*] -> StateC
         StateC -> StateE
-
-        state StateE#LightGreen
     }
-
-    StateD -up-> [H*]: E2
 }
 
+StateD -up-> Parent1[H*]: E2
 Parent1 -down-> StateD: E1
 
 @enduml
