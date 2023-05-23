@@ -155,6 +155,9 @@ is met. This could be achieved by setting condition callback and
 expected value. Transition will be ignored if value returned by callback
 doesnt match expected one.
 
+
+.. _features-transitions-priority:
+
 Priority of transitions
 =======================
 
@@ -182,17 +185,16 @@ Let's look at the following example:
 -  If **StateA** is active and **EVENT_1** is triggered:
 
    -  first self transition for **StateA** will be executed;
+   -  then both states B and C will be activated (see :ref:`features-parallel` section for details).
 
--  both states B and C will be activated (see `Parallel <#parallel>`__
-   section for details).
 -  If **StateD** is active and **EVENT_3** is triggered:
--  only StateD->StateE transition will be executed since internal
-   transitions have higher priority.
+
+   -  only StateD->StateE transition will be executed since internal transitions have higher priority.
+
 -  If **StateE** is active and **EVENT_3** is triggered:
 
    -  first self transition for **ParentState** will be executed;
-
--  then ParentState->StateF transition will be executed.
+   -  then ParentState->StateF transition will be executed.
 
 Synchronous transitions
 =======================

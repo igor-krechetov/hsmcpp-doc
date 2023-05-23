@@ -23,6 +23,7 @@ hsmcpp Documentation
    platforms/platforms
    code-generation/code-generation
    tools/tools
+   faq/faq
 
 .. toctree::
    :caption: API Reference

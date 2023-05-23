@@ -129,8 +129,8 @@ plantuml_output_format = 'png'
 extlinks = {'repo-link': ('https://github.com/igor-krechetov/hsmcpp/blob/main%s', '%s')}
 
 # -- sphinx_sitemap ------------------------------------------------
-html_baseurl = 'https://hsmcpp.readthedocs.io/'
-sitemap_url_scheme = "{lang}{version}{link}"
+html_baseurl = 'https://hsmcpp.readthedocs.io/en/latest/'
+sitemap_url_scheme = "{link}"
 
 # -- breathe --------------------------------------------------------
 breathe_default_project = "hsmcpp"

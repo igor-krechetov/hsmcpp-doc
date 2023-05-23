@@ -56,3 +56,10 @@
     border-top: solid white 1px;
     margin-top: 10px;
 } */
+
+
+/* Hide "Edit On GitHub" and versions menu */
+
+div.rst-versions {
+    display: none;
+}

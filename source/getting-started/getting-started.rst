@@ -85,6 +85,8 @@ Options can be applied when calling cmake:
    cmake -DHSMBUILD_TESTS=OFF -DHSMBUILD_EXAMPLES=OFF ..
 
 
+.. _gettingstarted-hello-world:
+
 Hello World!
 ============
 

@@ -69,7 +69,7 @@ Multiple entry points
 Composite states can have multiple entry points specified. This can be useful in the following cases:
 
 - you want to have a different entry point depending on some condition;
-- you want to activate multiple substates at the same time (see `parallel states <parallel#features-parallel>`__)
+- you want to activate multiple substates at the same time (see :ref:`features-parallel`)
 
 .. uml:: ./substates_entrypoint_multiple.pu
    :align: center
@@ -271,3 +271,22 @@ When using composite state we sometimes want to notify state machine that all su
 |                                        |                          MyStates::StateC,  |                                             |
 |                                        |                          MyEvents::E2);     |                                             |
 +----------------------------------------+---------------------------------------------+---------------------------------------------+
+
+
+Active states
+=============
+When working with substates it's important to understand which states are considered **active**. For example, if the last activated state was **Child_1_2** then all the following states will be considered active:
+
+* Parent
+* Child_1
+* Child_1_2
+
+.. uml:: ./substates_activestates.pu
+   :align: center
+   :alt: Active states example
+
+When processing a new event, HSM will search for a matching transition starting from the deepest child (see :ref:`features-transitions-priority` for details).
+
+To get a list of all current active states you can use :hsmcpp:`HierarchicalStateMachine::getActiveStates` API. For the current example call to this method would return [Parent, Child_1, Child_1_2] array.
+
+.. note:: Keep in mind that this is more of a debug feature. If you need to add logic based on current actives states to your code then this is a potential red flag that there is something wrong with the design.

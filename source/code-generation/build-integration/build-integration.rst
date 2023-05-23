@@ -10,7 +10,7 @@ Integrating code generation to project
 
 Ideally, code generation should be integrated into a build process to
 prevent any need for copy-pasting. Example of how to do so can be found
-in `/examples/02_generated <../blob/main/examples/02_generated>`__.
+in :repo-link:`/examples/02_generated`.
 
 To make invoking scxml2gen during build more convenient two CMake
 functions are provided:
@@ -85,8 +85,7 @@ HSM. Important points here are:
    )
    target_link_libraries(${BINARY_NAME_02} PRIVATE ${HSMCPP_STD_LIB})
 
-Implementation itself is very similar to a `HelloWorld
-example <../Getting-Started#hello-world>`__, but now we don't need to
+Implementation itself is very similar to a :ref:`gettingstarted-hello-world` example, but now we don't need to
 manually register HSM structure.
 
 **Suggestion:**
@@ -160,8 +159,7 @@ To generate a PlantUML file from SCXML simply call:
    python3 ./tools/scxml2gen/scxml2gen.py -plantuml -s ./tests/scxml/multilevel.scxml -o ./multilevel.plantuml
 
 You can also use CMake function generateHsmDiagram() to do it
-automatically during build. You can check example of its usage in
-`/examples/04_history/CMakeLists.txt <../blob/main/examples/04_history/CMakeLists.txt>`__.
+automatically during build. You can check example of its usage in :repo-link:`/examples/04_history/CMakeLists.txt`.
 
 .. |Editing HSM in Qt Creator| image:: https://github.com/igor-krechetov/hsmcpp/blob/main/doc/wiki/editors/editor_qt.png
 .. |Editing HSM in scxmlgui| image:: https://github.com/igor-krechetov/hsmcpp/blob/main/doc/wiki/editors/editor_scxmlgui.png

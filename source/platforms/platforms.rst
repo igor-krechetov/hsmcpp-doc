@@ -81,42 +81,37 @@ dispatcher instance, it will be distroyed automatically during HSM
 object destruction. Clients can use on of the built-in dispatchers or
 implement their own.
 
-Built-in dispatchers
+
+.. _platforms-builtin-dispatchers:
+
+Built-in Dispatchers
 ====================
 
 Currently hsmcpp includes the following dispatchers:
 
--  **HsmEventDispatcherSTD**
++-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
+|  Dispatcher                       | Creates Thread | Create / Init / Delete  | Details                                             |
++===================================+================+=========================+=====================================================+
+| **HsmEventDispatcherSTD**         |    |ok|        | anywhere                | Internally starts std::thread and uses it to        |
+|                                   |                |                         | dispatch HSM events.                                |
++-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
+| **HsmEventDispatcherGlib**        |    |na|        | event loop              | Dispatches hsm events through Glib main loop.       |
++-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
+| **HsmEventDispatcherGlibmm**      |    |na|        | event loop              | Same as HsmEventDispatcherGlib, but uses Glibmm     |
+|                                   |                |                         | (C++ wrapper over Glib) and Glib::Dispatcher to     |
+|                                   |                |                         | handle events.                                      |
++-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
+| **HsmEventDispatcherQt**          |    |na|        | event loop              | Dispatches hsm events through main Qt event loop.   |
++-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
+| **HsmEventDispatcherArduino**     |    |na|        | anywhere                | Dispatches hsm events every time dispatchEvents()   |
+|                                   |                |                         | method is called in Arduino's loop() function.      |
++-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
+| **HsmEventDispatcherFreeRTOS**    |    |ok|        | FreeRTOS Task           | Internally starts FreeRTOS task and uses it to      |
+|                                   |                |                         | dispatch HSM events.                                |
++-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
 
-   -  internally starts std::thread and uses it to dispatch HSM events
-
--  **HsmEventDispatcherGlib**
-
-   -  dispatches hsm events through Glib main loop. No additional
-      threads are created.
-
--  **HsmEventDispatcherGlibmm**
-
-   -  same as HsmEventDispatcherGlib, but uses Glibmm (C++ wrapper over
-      Glib) and Glib::Dispatcher to handle events. No additional threads
-      are created.
-
--  **HsmEventDispatcherQt**
-
-   -  dispatches hsm events through main Qt event loop. No additional
-      threads are created.
-
--  **HsmEventDispatcherArduino**
-
-   -  dispatches hsm events every time dispatchEvents() method is called in Arduino's loop() function. No additional
-      threads are created.
-
--  **HsmEventDispatcherFreeRTOS**
-
-   -  internally starts FreeRTOS task and uses it to dispatch HSM events
-
-Since these dispatchers have dependencies on external libraries and only
-one of them is usually needed, you need to explicitly enable them for
+Since these dispatchers have dependencies on external libraries (and only
+one of them is usually needed) you need to explicitly enable them for
 compilation using these CMake options:
 
 - HSMBUILD_DISPATCHER_GLIB

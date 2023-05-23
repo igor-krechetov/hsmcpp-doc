@@ -1,0 +1,21 @@
+@startuml
+
+[*] --> Parent
+
+state Parent #LightGreen {
+    [*] -> Child_1
+
+    Child_1 -> Child_2
+    Child_1 <- Child_2
+
+    state Child_1 #LightGreen {
+        [*] --> Child_1_1
+        Child_1_1 -> Child_1_2 #LightGreen
+    }
+    state Child_2 {
+        [*] --> Child_2_1
+        Child_2_1 -> Child_2_2
+    }
+}
+
+@enduml

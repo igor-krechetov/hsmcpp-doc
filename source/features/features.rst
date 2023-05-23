@@ -11,6 +11,7 @@ the structure and logic. The goal of this documentation is to explain how **hsmc
 library can be used. So basics of HSM will not be covered. If you are are not familiar
 with state machines design pattern, you can familiarize yourself with HSM concept and terminology here:
 
+*  `Welcome to the world of Statecharts <https://statecharts.dev>`_
 *  `Introduction to Hierarchical State Machines <https://barrgroup.com/embedded-systems/how-to/introduction-hierarchical-state-machines>`_
 *  `Wikipedia: UML state machine <https://en.wikipedia.org/wiki/UML_state_machine>`_
 *  `Hierarchical Finite State Machine for AI Acting Engine <https://towardsdatascience.com/hierarchical-finite-state-machine-for-ai-acting-engine-9b24efc66f2>`_
