@@ -28,7 +28,7 @@ SORT_MEMBER_DOCS = NO
 
 INPUT   = ./hsmcpp/include
 EXCLUDE_PATTERNS = FreeRTOSConfig.h FreeRtosPort.hpp logging.hpp */os/*
-EXCLUDE_SYMBOLS = hsmcpp::HsmEventDispatcherBase::TimerInfo hsmcpp::HsmEventDispatcherBase::EnqueuedEventInfo HsmEventDispatcherArduino::RunningTimerInfo HsmEventDispatcherSTD::RunningTimerInfo DEF_CONSTRUCTOR DEF_OPERATOR_ASSIGN HsmTransitionCallbackPtr_t HsmTransitionConditionCallbackPtr_t HsmTransitionFailedCallbackPtr_t HsmStateChangedCallbackPtr_t HsmStateEnterCallbackPtr_t HsmStateExitCallbackPtr_t INVALID_ID
+EXCLUDE_SYMBOLS = hsmcpp::HsmEventDispatcherBase::TimerInfo hsmcpp::HsmEventDispatcherBase::EnqueuedEventInfo HsmEventDispatcherArduino::RunningTimerInfo HsmEventDispatcherSTD::RunningTimerInfo DEF_CONSTRUCTOR DEF_OPERATOR_ASSIGN DEF_MAKE DEF_MAKE_DOC HsmTransitionCallbackPtr_t HsmTransitionConditionCallbackPtr_t HsmTransitionFailedCallbackPtr_t HsmStateChangedCallbackPtr_t HsmStateEnterCallbackPtr_t HsmStateExitCallbackPtr_t INVALID_ID
 EXTRACT_PRIVATE = NO
 HIDE_UNDOC_MEMBERS = NO
 HIDE_UNDOC_CLASSES = YES

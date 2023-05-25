@@ -58,7 +58,7 @@
 } */
 
 
-/* Hide "Edit On GitHub" and versions menu */
+/* Hide versions menu */
 
 div.rst-versions {
     display: none;

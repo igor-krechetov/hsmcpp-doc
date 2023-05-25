@@ -110,7 +110,7 @@ To register a self-transition use :hsmcpp:`HierarchicalStateMachine::registerSel
           :hsmcpp:`HierarchicalStateMachine::registerTransition` API. Keep in mind that in this case transition type
           will be automatically set to **"external"**.
 
-There are 2 types of self-transitions (see :hsmcpp:`HierarchicalStateMachine::TransitionType` enum):
+There are 2 types of self-transitions (see :hsmcpp:`TransitionType` enum):
 
 =============== ================================================================
 Transition Type Description

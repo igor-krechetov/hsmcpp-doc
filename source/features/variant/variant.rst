@@ -47,7 +47,7 @@ To create a Variant from a basic type:
    Variant v1(7);
    Variant v2 = Variant::make(7);
 
-To get value our of Variant container you can use one of the toXXXXX() functions (for example :hsmcpp:`Variant::toString`) or :hsmcpp:`Variant::value`:
+To get value our of Variant container you can use one of the toXXXXX() functions (for example :hsmcpp:`Variant::toString`) or :hsmcpp:`Variant::getCustomType`:
 
 .. code-block:: c++
 

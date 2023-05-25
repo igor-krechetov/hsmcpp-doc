@@ -33,13 +33,15 @@ with open("./hsmcpp/CHANGELOG.md", "r") as f:
             match = re.search(pattern, line)
             if match:
                 release = match.group(1)
-                print(f"{release=:}")
+                print(f"hsmcpp version={release=:}")
             break
         lineNumber += 1
 
 if release is None:
     print(f"ERROR: hsmcpp version not found or it has incorrect format: '{line}'")
     exit(1)
+
+version = release
 
 # -- Environment ------------------------------------------------------------
 sourcePath = os.path.dirname(os.path.realpath(__file__))
@@ -104,15 +106,15 @@ html_css_files = ['css/custom.css']
 
 # html_theme_options = {
 #     'navigation_depth': 4,
-#     'titles_only': True
+#     'titles_only': True,
+#     'display_version': False
 # }
+
+html_show_sourcelink = False
 
 # Tell sphinx what the primary language being documented is.
 primary_domain = 'cpp'
-
 pygments_style = "sphinx"
-
-html_show_sourcelink = False
 
 # -- sphinxcontrib.plantuml ---------------------------------------------------
 if on_rtd:
