@@ -18,7 +18,7 @@ from bs4 import BeautifulSoup
 project = 'HSMCPP'
 copyright = '2021, Igor Krechetov'
 author = 'Igor Krechetov'
-release = None
+hsmcpp_version = None
 version = 'latest'
 on_rtd = os.environ.get('READTHEDOCS') == 'True'
 
@@ -32,16 +32,16 @@ with open("./hsmcpp/CHANGELOG.md", "r") as f:
             pattern = r"\[(\d+\.\d+\.\d+)\]"
             match = re.search(pattern, line)
             if match:
-                release = match.group(1)
-                print(f"hsmcpp version={release=:}")
+                hsmcpp_version = match.group(1)
+                print(f"hsmcpp version={hsmcpp_version=:}")
             break
         lineNumber += 1
 
-if release is None:
+if hsmcpp_version is None:
     print(f"ERROR: hsmcpp version not found or it has incorrect format: '{line}'")
     exit(1)
 
-version = release
+version = hsmcpp_version
 
 # -- Environment ------------------------------------------------------------
 sourcePath = os.path.dirname(os.path.realpath(__file__))
