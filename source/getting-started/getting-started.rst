@@ -21,8 +21,8 @@ Building the library
 Requirements
 ------------
 
-* CMake 3.14+
-* Python 3
+* CMake 3.16+
+* Python 3.8+
 
 
 Ubuntu
@@ -78,7 +78,7 @@ Option                            Description
 **HSMBUILD_EXAMPLES**             Build examples
 ================================= ==============================================================================================================
 
-Options can be applied when calling cmake:
+Options can be applied when running cmake:
 
 .. code-block::  bash
 
