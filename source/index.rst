@@ -10,8 +10,9 @@ hsmcpp Documentation
    This project is under active development.
 
 
-.. mdinclude:: ./hsmcpp/README.md
-    :end-line: 167
+.. include:: ./hsmcpp/README.md
+   :parser: myst_parser.sphinx_
+   :end-line: 167
 
 .. toctree::
    :maxdepth: 4

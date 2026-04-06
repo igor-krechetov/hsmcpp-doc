@@ -9,5 +9,5 @@ Changelog
    :depth: 1
 
 
-.. mdinclude:: ./hsmcpp/CHANGELOG.md
-    :start-line: 3
+.. include:: ./hsmcpp/CHANGELOG.md
+   :parser: myst_parser.sphinx_

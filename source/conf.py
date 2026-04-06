@@ -85,12 +85,27 @@ with open(hsmcppTagFile, "r+") as file:
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
-extensions = ['sphinx.ext.extlinks', 'sphinxemoji.sphinxemoji', 'm2r2',
+extensions = ['sphinx.ext.extlinks', 'sphinxemoji.sphinxemoji', 'myst_parser', # 'm2r2',
               'sphinxcontrib.plantuml', 'sphinx_sitemap', 'breathe', 'exhale',
-              'sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinxcontrib.doxylink']
+              'sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinxcontrib.doxylink', 'sphinxcontrib.mermaid']
 
 templates_path = ['_templates']
 exclude_patterns = ['hsmcpp']
+
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".md": "markdown",
+}
+
+# -- Options for myst_parser -------------------------------------------------
+myst_enable_extensions = [
+    "colon_fence",      # for ``` blocks behaving well
+    "deflist",          # definition lists
+    "linkify",          # auto links
+    "substitution",
+]
+
+myst_fence_as_directive = ["mermaid"]
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
