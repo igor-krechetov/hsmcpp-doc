@@ -1,3 +1,6 @@
 [submodule "hsmcpp"]
 	path = source/hsmcpp
 	url = https://github.com/igor-krechetov/hsmcpp.git
+[submodule "source/hsm-ide"]
+	path = source/hsm-ide
+	url = https://github.com/igor-krechetov/hsm-ide.git
