@@ -30,13 +30,26 @@ HSM applies following logic when trying to execute a transition:
    :align: center
    :alt: Callbacks execution order
 
-It is possible to define multiple transitions between two states. As a
-general rule, these transitions should be exclusive, but HSM doesn't
-enforce this. If multiple valid transitions are found for the same event
-then the first applicable one will be used (based on registration
-order). **But this situation should be treated by developers as a bug in
-their code since it most probably will result in unpredictable
-behavior.**
+It is possible to define multiple transitions for the same event from
+the same state. When more than one of them is valid at the same time,
+hsmcpp does **not** pick just the first one: it executes **all** valid
+transitions in a deterministic order. Registration order governs the
+**order** in which those transitions are evaluated and executed, not
+which single one is selected (see :ref:`features-transitions-priority`
+for the full ordering rules).
+
+This "execute every valid transition" behavior is exactly how hsmcpp
+implements parallel (concurrent) states: there is no separate
+"parallel region" construct, so activating several states at once is
+done by defining multiple transitions that are valid for the same
+event. See :ref:`features-parallel` for details and a working example.
+
+Because of this, multiple valid transitions are a supported feature
+when their target states live in independent, orthogonal regions.
+They become an anti-pattern only when several transitions target the
+**same** state and therefore conflict. If you need at most one of a
+set of transitions to fire, make them mutually exclusive with
+conditional transitions (guards) rather than relying on ordering.
 
 Usage
 =====
@@ -165,7 +178,10 @@ Ideally, when designing state machine, you should avoid having multiple
 transitions which could be valid at the same time. This will make
 understanding the logic and debugging easier. But if for some reason
 your state machine will contain such transition, hsmcpp library will
-still handle them in a deterministic and predictable manner:
+still handle them in a deterministic and predictable manner. As noted
+in the Overview, "registration order" here determines the **order** in
+which valid transitions execute, not which one is chosen — every valid
+transition runs (see :ref:`features-parallel`):
 
 -  all valid transitions will be executed if they are defined on the
    same level;
