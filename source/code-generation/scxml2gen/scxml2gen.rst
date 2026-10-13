@@ -57,8 +57,8 @@ scxml2gen comes with a predefined template for hpp and cpp files:
 - :repo-link:`/tools/scxml2gen/template.cpp`
 - :repo-link:`/tools/scxml2gen/template.hpp`
 
-It it doesnt satisfy your project needs you can define your own.
-Currently scxml2gen supports following variables:
+If it doesn't satisfy your project needs you can define your own.
+Currently scxml2gen supports the following variables:
 
 -  **CLASS_NAME**: name of generated class (constructed as class name +
    suffix provided as arguments)

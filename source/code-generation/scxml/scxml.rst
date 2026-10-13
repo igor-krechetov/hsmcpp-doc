@@ -313,7 +313,7 @@ Restrictions and things to consider:
    HSM will *usually* not work without one (validation was disabled on
    purpose to allow importing of a single state).
 -  it's highly recommended to wrap <xi:include> into a <state> node
-   which doesnt contain any other states or includes (transitions are
+   which doesn't contain any other states or includes (transitions are
    allowed).
 
    -  in this case parent state will work like a namespace altering
@@ -322,13 +322,13 @@ Restrictions and things to consider:
    -  exit transition can be defined
 
 -  when using <xi:include> on the same level with other states or
-   include keep in mid that:
+   includes keep in mind that:
 
    -  code will be inserted as-is. name collisions, incorrect initial
-      states, non existent transitions will not be resolved;
-   -  GUI editors don't allow to define exit/enter transitions (though
-      it's possible to define them manually in XML you will loose
-      ability to edit such file in GUI editor).
+      states, non-existent transitions will not be resolved;
+   -  GUI editors don't allow defining exit/enter transitions (though
+      it's possible to define them manually in XML, you will lose the
+      ability to edit such a file in a GUI editor).
 
 
 Using <xi:include> with a wrapper state
@@ -361,8 +361,8 @@ Including <xi:include> directly
    :language: xml
 
 Note how we define a transition to State1 even though it's not defined
-in xi_include_direct.scxml. Transition will become valid after code from
-state1.scxml will be included.
+in xi_include_direct.scxml. The transition will become valid after the code from
+state1.scxml is included.
 
 .. code-block::  xml
 
@@ -398,7 +398,7 @@ of a <state>.
        ...
    </state>
 
-This will behave exactly same as a <xi:include> tag wrapped inside a
+This will behave exactly the same as a <xi:include> tag wrapped inside a
 <state>.
 
 Keep in mind that **this is not a part of W3 SCXML specification** and

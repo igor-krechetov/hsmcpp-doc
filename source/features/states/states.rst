@@ -53,7 +53,7 @@ HSM as a separate object, here are possible ways to register a state:
 .. literalinclude:: state_api.cpp
    :language: c++
 
-Note that specifying template parameter for registerState() function is optional, if you explicitly need to
+Note that specifying the template parameter for the registerState() function is optional; if you explicitly need to
 pass nullptr (as in the last example) you will need to provide it.
 
 
@@ -88,8 +88,8 @@ At the moment two triggers are supported (see :hsmcpp:`StateActionTrigger` enum)
 ======================================= ===============================================
 Trigger                                 Description
 ======================================= ===============================================
-**StateActionTrigger.ON_STATE_ENTRY**   will execute action when *entering* a state;
-**StateActionTrigger:ON_STATE_EXIT**    will execute action when *exiting* a state.
+**StateActionTrigger::ON_STATE_ENTRY**  will execute action when *entering* a state;
+**StateActionTrigger::ON_STATE_EXIT**   will execute action when *exiting* a state.
 ======================================= ===============================================
 
 .. note:: actions will be executed *only if* ongoing transition wasn't blocked by entry/exit callbacks.
@@ -103,7 +103,7 @@ Action                          Arguments                                     De
                                 - int intervalMs                                 fire only once and then will stay idle until started again;
                                 - bool singleshot                             -  does nothing if timerID or interval are invalid;
                                                                               -  does nothing if requested timer is already running;
-**StateAction::STOP_TIMER**     - int timerID                                 -  stops running timer without trigerring anything;
+**StateAction::STOP_TIMER**     - int timerID                                 -  stops running timer without triggering anything;
                                                                               -  does nothing if requested timer is not running;
 **StateAction::RESTART_TIMER**  - int timerID                                 -  restarts timer with the same interval and mode (singleshot or
                                                                                  repeating) as were specified in start timer;
@@ -112,7 +112,7 @@ Action                          Arguments                                     De
                                                                               .. note:: trying to restart expired singleshot timer will do
                                                                                  nothing since this timer is considered as "not running". Use
                                                                                  "start timer" action instead.
-**StateAction::TRANSITION**     - int eventID                                 -  add specified event with it's arguments to the end of transition queue;
+**StateAction::TRANSITION**     - int eventID                                 -  add specified event with its arguments to the end of transition queue;
                                 - {arg1, arg2, ...}
 ==============================  ============================================= ==========================================================================================
 

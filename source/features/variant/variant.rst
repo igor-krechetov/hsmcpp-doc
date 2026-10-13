@@ -7,7 +7,7 @@ Variant Type
 Overview
 ========
 
-Due to C++11 not having std::variant type, hsmcpp library comes with it's own
+Due to C++11 not having std::variant type, hsmcpp library comes with its own
 implementation of Variant container. It supports all basic types and
 some variations of std containers (see :hsmcpp:`Variant::Type` enum).
 
@@ -47,7 +47,7 @@ To create a Variant from a basic type:
    Variant v1(7);
    Variant v2 = Variant::make(7);
 
-To get value our of Variant container you can use one of the toXXXXX() functions (for example :hsmcpp:`Variant::toString`) or :hsmcpp:`Variant::getCustomType`:
+To get a value out of the Variant container you can use one of the toXXXXX() functions (for example :hsmcpp:`Variant::toString`) or :hsmcpp:`Variant::getCustomType`:
 
 .. code-block:: c++
 

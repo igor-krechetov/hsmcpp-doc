@@ -68,7 +68,7 @@ needs.
 
 *IHsmEventDispatcher* responsibilities include:
 
--  asynchronously invoke listeners callback after receiving event was
+-  asynchronously invoke listeners' callbacks after an event is
    emitted;
 -  provide thread-safe way to emit events;
 -  provide interrupts-safe way to emit events;
@@ -77,8 +77,8 @@ needs.
 
 When initializing HSM object it's required to provide an instance of
 IHsmEventDispatcher. Unless you keep a copy of shared_ptr with
-dispatcher instance, it will be distroyed automatically during HSM
-object destruction. Clients can use on of the built-in dispatchers or
+dispatcher instance, it will be destroyed automatically during HSM
+object destruction. Clients can use one of the built-in dispatchers or
 implement their own.
 
 
@@ -169,7 +169,7 @@ In general is same as HsmEventDispatcherGlib, but it utilizes
 GLib::Dispatcher class to handle events. Due to GLib::Dispatcher
 implementation this applies some restrictions:
 
--  HsmEventDispatcherGLibmm must be constructred and destroyed in the
+-  HsmEventDispatcherGLibmm must be constructed and destroyed in the
    receiver thread (the thread in whose main loop it will execute its
    connected slots)
 -  registerEventHandler() must be called from the same thread where
@@ -182,9 +182,9 @@ Not following these rules will result in an occasional SIGSEGV crash
 (usually when deleting dispatcher instance).
 
 Unless you really have to, it's **always better to reuse a single
-dispatcher instance for multiple HSMs** instead of creating/deliting
-multiple ones(they will anyway handle events sequentially since they use
-same Glib main loop).
+dispatcher instance for multiple HSMs** instead of creating/deleting
+multiple ones (they will anyway handle events sequentially since they use
+the same Glib main loop).
 
 
 .. _platforms-dispatcher-qt:
@@ -203,7 +203,7 @@ main thread).
 HsmEventDispatcherArduino
 -------------------------
 
-Dispatching  is done by periodically calling dispatchEvents() in the Arduino's loop() function. All transitions and callbaks
+Dispatching is done by periodically calling dispatchEvents() in the Arduino's loop() function. All transitions and callbacks
 are processed within it. Therefore it's advised to avoid using blocking operations inside HSM callbacks
 to make your software more responsive. Instead, utilization of async APIs is highly recommended.
 When possible, try replacing calls to delay() with HSM timeouts.
@@ -224,7 +224,7 @@ HsmEventDispatcherFreeRTOS
 --------------------------
 
 HsmEventDispatcherFreeRTOS utilizes a custom FreeRTOS Task to handle HSM events and callbacks.
-Task is created and started during call to dispatcher's initialize()API.
+Task is created and started during the call to the dispatcher's initialize() API.
 
 .. note:: Creation and initialization of HSM and dispatcher should  be done inside of a Task and not main() function.
 
@@ -232,7 +232,7 @@ Task is created and started during call to dispatcher's initialize()API.
 Compiling
 ~~~~~~~~~
 
-hsmcpp library musts be compiled as part of your application's build. Make sure to set **HSMBUILD_FREERTOS_ROOT**
+hsmcpp library must be compiled as part of your application's build. Make sure to set **HSMBUILD_FREERTOS_ROOT**
 build option and specify path to your FreeRTOS root directory.
 For reference see :repo-link:`/examples/08_freertos`
 
@@ -240,11 +240,11 @@ For reference see :repo-link:`/examples/08_freertos`
 FreeRTOS configuration file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Due to the specifics of the platfrom, you would usually need a FreeRTOS configuration file.
+Due to the specifics of the platform, you would usually need a FreeRTOS configuration file.
 If you don't care much about specific settings, hsmcpp library already includes a default
 configuration (though I do recommend to review it to avoid any unexpected behavior of your code).
 In case a custom configuration is needed, it can be specified using **HSMBUILD_FREERTOS_CONFIG_FILE_DIRECTORY**
-build opion. It should point to a folder containing your `FreeRTOSConfig.h <https://www.freertos.org/a00110.html>`__ file.
+build option. It should point to a folder containing your `FreeRTOSConfig.h <https://www.freertos.org/a00110.html>`__ file.
 
 .. warning:: FreeRTOSConfig.h included in hsmcpp repository was tested only with POSIX simulation of FreeRTOS. It should be
              treated only as a reference and it's your responsibility to provide correct config for your specific HW.
@@ -259,7 +259,7 @@ Additionally, following FreeRTOS features must be enabled:
 
 If you are using interrupts (ISR) in your code, you must provide implementation for
 xPortIsInsideInterrupt() API (usually provided by your FreeRTOS port; defined in portmacro.h). In case this
-API is not available and your are not going to interact with HSM from within interrupts
+API is not available and you are not going to interact with HSM from within an interrupt
 handler, then you can enable default implementation of xPortIsInsideInterrupt() by turning
 on **BUILD_FREERTOS_DEFAULT_ISR_DETECT** build option (default implementation simply always returns **FALSE**).
 
@@ -274,8 +274,8 @@ Even though STD based dispatcher will work in all situations, sometimes
 it's not desirable or even impossible to have an additional unmanaged
 thread running in the process (for example in case of RTOS systems which
 often utilize watchdog mechanism). In this case it's possible to use
-your own dispatcher by implementing **IHsmEventDispatcher** interface.
-When doing so keeping the following things in mind:
+your own dispatcher by implementing the **IHsmEventDispatcher** interface.
+When doing so, keep the following things in mind:
 
 -  emit() method should be thread-safe.
 -  start() method is used by HSM to start event dispatching. It is

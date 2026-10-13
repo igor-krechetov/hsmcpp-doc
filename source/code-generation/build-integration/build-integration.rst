@@ -63,13 +63,13 @@ To make invoking scxml2gen during build more convenient a couple of CMake functi
 They will be automatically available to you when including root
 CMakeLists.txt file in your project.
 
-Here is an example of CMake script to build generate and build a simple
+Here is an example of a CMake script to generate and build a simple
 HSM. Important points here are:
 
--  using **add_dependencies()**. **generateHsm()** just and a custom target, so
+-  using **add_dependencies()**. **generateHsm()** just adds a custom target, so
    without anyone depending on it nothing will be generated.
 -  the last argument to generateHsm() must be a string with a variable
-   name (not variable itself!).
+   name (not the variable itself!).
 -  adding generated cpp file to your executable.
 
 .. literalinclude:: /hsmcpp/examples/02_generated/CMakeLists.txt
@@ -82,8 +82,8 @@ manually register HSM structure.
 
 -  use *override* keyword for callbacks. This will save you a lot of
    effort if callback gets renamed/removed from HSM definition.
--  you can use protected inheritance for generated class (SwitchHsmBase)
-   if you want to prevent clients (of SwitchHsm) to directly access HSM
+-  you can use protected inheritance for the generated class (SwitchHsmBase)
+   if you want to prevent clients (of SwitchHsm) from directly accessing the HSM
    API.
 -  you can generate your files anywhere, but doing it inside your build
    folder will prevent you from accidentally submitting them.

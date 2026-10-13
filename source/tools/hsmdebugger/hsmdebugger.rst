@@ -39,12 +39,11 @@ Installing dependencies (Ubuntu)
    pip3 install PySide6
    pip3 install PyYaml
 
-.. note:: Currently (2021.06) plantuml package on Ubuntu is tool old (V1.2018.13).
-          Hopefully, this will be fixed one day, but for now you'll need to \ `download plantuml <https://plantuml.com/en/download>`__ manually.
+.. note:: Make sure to use latest plantuml package. You can `download plantuml <https://plantuml.com/en/download>`__ manually.
 
           You can either:
 
-          - replace instaled binary with the new version (/usr/share/plantuml/plantuml.jar);
+          - replace the installed binary with the new version (/usr/share/plantuml/plantuml.jar);
           - or specify path to your downloaded jar file in hsmdebugger settings.
 
 
@@ -52,7 +51,7 @@ Installing dependencies (Windows)
 ---------------------------------
 
 -  `Download Python <https://www.python.org/downloads/windows/>`__
--  `Dowload PlantUML <https://plantuml.com/en/download>`__
+-  `Download PlantUML <https://plantuml.com/en/download>`__
 
 .. code-block::  bash
 
@@ -66,7 +65,7 @@ How to use
 Configuring environment
 -----------------------
 
-Before starting to use hsmdebugger please check that it's environment is
+Before starting to use hsmdebugger please check that its environment is
 correctly configured.
 
 Go to File -> Settings:
@@ -76,7 +75,7 @@ Go to File -> Settings:
    :alt: HSM Debugger Settings
 
 Make sure that path to scxml2gen.py is correctly specified. Normally you
-don't need to change anything if you run hsmdebugger from it's original
+don't need to change anything if you run hsmdebugger from its original
 folder.
 
 **For Windows:** it's necessary to specify **full path** to plantuml

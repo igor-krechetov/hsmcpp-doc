@@ -32,7 +32,7 @@ Requirements
 Ubuntu
 ------
 
-Simplest way to build hsmcpp is to run build.sh script:
+The simplest way to build hsmcpp is to run the build.sh script:
 
 .. code-block::  bash
 

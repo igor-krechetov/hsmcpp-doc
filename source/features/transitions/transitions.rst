@@ -18,13 +18,13 @@ Transition is an entity that allows changing current HSM state to a
 different one. Its definition includes:
 
 -  starting state: state from which transition is possible
--  target state: new state which HSM which have if transition is
+-  target state: new state which HSM will have if transition is
    successful
--  triggering event: even which triggers transition
+-  triggering event: event which triggers transition
 -  condition (optional): additional logic to restrict transition
 -  callback (optional): will be called during transition
 
-HSM applies following logic when trying to execute a transition:
+HSM applies the following logic when trying to execute a transition:
 
 .. uml:: ./callbacks_execution_order.pu
    :align: center
@@ -65,19 +65,19 @@ Call :hsmcpp:`HierarchicalStateMachine::transition` API to trigger a transition.
 
    hsm.transition(MyEvents::EVENT_1);
 
-Normally if you try to send event which is not handled in current state
-it will be just ignored by HSM without any notification. But sometimes
-you might want to know in advance if transition would be possible or
+Normally if you try to send an event which is not handled in the current state
+it will just be ignored by HSM without any notification. But sometimes
+you might want to know in advance whether a transition would be possible or
 not. You can use :hsmcpp:`HierarchicalStateMachine::isTransitionPossible` API for that.
-It will check if provided event will be accepted by HSM taking in consideration:
+It will check if the provided event will be accepted by HSM, taking into consideration:
 
 -  current state
 -  pending events
 -  conditions assigned to transitions
 
-.. note:: It is still possible for HSM to reject your event if after
-          :hsmcpp:`HierarchicalStateMachine::isTransitionPossible` some other thread will manage to trigger
-          another transition be careful when using it in multi-threaded
+.. note:: It is still possible for HSM to reject your event if, after
+          :hsmcpp:`HierarchicalStateMachine::isTransitionPossible`, some other thread manages to trigger
+          another transition. Be careful when using it in a multi-threaded
           environment.
 
 .. _features-transitions-cancellation:
@@ -85,12 +85,12 @@ It will check if provided event will be accepted by HSM taking in consideration:
 Cancelling pending transitions
 ------------------------------
 
-By default, transitions are executed asynchronously and it's a
+By default, transitions are executed asynchronously and it's the
 recommended way to use them. When multiple events are sent at the same
 time they will be internally queued and executed sequentially.
 Potentially it's possible to have multiple events queued when you need
-to send a new event which will make previous events obsolete (for
-example user want to cancel operation). In this case you can use
+to send a new event which makes previous events obsolete (for
+example, the user wants to cancel an operation). In this case you can use
 :hsmcpp:`HierarchicalStateMachine::transitionWithQueueClear` or
 :hsmcpp:`HierarchicalStateMachine::transitionEx` to clear pending events:
 
@@ -158,15 +158,15 @@ callbacks will be processed:
    :align: center
    :alt: External self-transition example
 
-.. note:: Notice how after external self-transition **StateB** became active. This happened due to state machine exiting from **ParentState_1** and, consequentially, exiting from it's substates too.
+.. note:: Notice how after external self-transition **StateB** became active. This happened due to state machine exiting from **ParentState_1** and, consequentially, exiting from its substates too.
 
 Conditional transitions
 =======================
 
 Sometimes transition should be executed only when a specific condition
-is met. This could be achieved by setting condition callback and
-expected value. Transition will be ignored if value returned by callback
-doesnt match expected one.
+is met. This could be achieved by setting a condition callback and
+an expected value. Transition will be ignored if the value returned by the callback
+doesn't match the expected one.
 
 
 .. _features-transitions-priority:
@@ -174,10 +174,10 @@ doesnt match expected one.
 Priority of transitions
 =======================
 
-Ideally, when designing state machine, you should avoid having multiple
+Ideally, when designing a state machine, you should avoid having multiple
 transitions which could be valid at the same time. This will make
 understanding the logic and debugging easier. But if for some reason
-your state machine will contain such transition, hsmcpp library will
+your state machine does contain such transitions, hsmcpp library will
 still handle them in a deterministic and predictable manner. As noted
 in the Overview, "registration order" here determines the **order** in
 which valid transitions execute, not which one is chosen — every valid
@@ -215,7 +215,7 @@ Let's look at the following example:
 Synchronous transitions
 =======================
 
-.. warning:: It's **strongly discouraged** to usage synchronous transitions in production code. They were added mostly for testing purposes, since async unit tests are a headache to deal with.
+.. warning:: It's **strongly discouraged** to use synchronous transitions in production code. They were added mostly for testing purposes, since async unit tests are a headache to deal with.
 
 Transitions can be executed synchronously using :hsmcpp:`HierarchicalStateMachine::transitionEx` API.
 Please keep these things in mind when using synchronous transitions:
