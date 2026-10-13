@@ -14,6 +14,10 @@ There are 2 ways to add hsmcpp library to your project:
 * compile, install and use library through pkg-config;
 * add hsmcpp repository as a git submodule and compile it together with your project.
 
+.. tip:: To design and edit your state machines visually, the recommended tool is
+         :ref:`code-generation-hsm-ide` -- a desktop editor built specifically around
+         hsmcpp.
+
 
 Building the library
 ====================

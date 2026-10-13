@@ -8,6 +8,11 @@ SCXML editors
    :local:
 
 
+.. note:: For designing hsmcpp state machines the recommended tool is
+          :ref:`code-generation-hsm-ide`, which understands hsmcpp-specific
+          concepts natively. The general-purpose SCXML editors below are
+          documented as alternatives.
+
 Unfortunately, there doesn't seem to be too many available free SCXML editors, and even less of
 them are actively maintained. I tried to gather on this page all usable tools that I was able to find.
 
@@ -36,97 +41,66 @@ here:
 -  `Editing State Charts in Qt Creator <https://doc.qt.io/qtcreator/creator-scxml.html>`__
 -  `Qt SCXML and state machine tooling in Qt Creator <https://www.youtube.com/watch?v=9xqhq9nDiOg>`__
 
-Now let's go through working with hsmcpp specific features.
+Now let's go through where hsmcpp-specific features are set **in the Qt Creator
+UI**. For what each construct means and its SCXML-level format, follow the
+cross-reference links.
 
 
 Specifying callbacks in editor
 ------------------------------
 
-There are 4 types of callbacks (see :ref:`features-states-actions` and
-:ref:`features-transitions` for details):
+For the meaning and format of the 4 callback types, see
+:ref:`scxml-callbacks`. In Qt Creator they are entered as:
 
--  state entering
--  state changed
--  state exiting
--  transition
-
-They are specified as a C++ callback name which will be generated in HSM
-class.
-
-State changed callback can be specified in **state->Invoke->srcexp** or **state->Invoke->src**:
-|State callback|
-
-State entering callback can be specified in **state->onentry->script->Content**:
-|State entering callback|
-
-State exiting callback can be specified in **state->onexit->script->Content**:
-|State exiting callback|
-
-Transition callback can be specified in **transition->script->Content**:
-|State exiting callback|
+-  state changed -- **state->Invoke->srcexp** or **state->Invoke->src**:
+   |State callback|
+-  state entering -- **state->onentry->script->Content**:
+   |State entering callback|
+-  state exiting -- **state->onexit->script->Content**:
+   |State exiting callback|
+-  transition -- **transition->script->Content**:
+   |State exiting callback|
 
 
 Working with timers and actions
 -------------------------------
 
-:ref:`features-states-actions` in HSM provide following operations:
-
--  start timer
--  stop timer
--  restart timer
--  trigger transition on timer
--  trigger a regular transition
-
-Actions can be specified in:
-
--  state->onentry
--  state->onexit
+For the list of timer/transition actions and their command format, see
+:ref:`scxml-timers`. In Qt Creator, actions are entered under
+**state->onentry** or **state->onexit**:
 
 |Timer start action|
 
-Command format is:
-
--  *start_timer(<timer_id>, < interval in milliseconds >, <is
-   singleshot: true \| false>)*
--  *stop_timer(<timer_id>)*
--  *restart_timer(<timer_id>)*
--  *transition(<event_id>, {arg1, arg2, ...})*
-
-   -  .. note:: arguments are optional. at the moment only strings and numbers are supported
-
-Using any of the above timer actions will result in availability of
-timer event. Name format: **ON_TIMER_<timer_id>** |Timer transition|
+The resulting timer event (**ON_TIMER_<timer_id>**) can then be used as a
+transition trigger: |Timer transition|
 
 
 Conditional transitions
 -----------------------
 
-Condition for transitions can be specified in **transition->cond**:
+For the condition formats, see :ref:`scxml-conditional-transitions`. In Qt
+Creator the condition is entered in **transition->cond**:
 |Conditional transition|
-
-Possible formats:
-
--  *<callback_name> is false*
--  *<callback_name> is true*
--  *<callback_name>* (same as "is true")
 
 
 Conditional entry points
 ------------------------
 
-Hsmcpp library supports :ref:`features-substates-conditional_entry_points`, but defining them
-through editor directly is not possible.
+For what conditional entry points are and their SCXML format, see
+:ref:`scxml-conditional-entry-points`. Qt Creator cannot define more than one
+transition from an entry point directly, so this needs a manual XML edit.
 
 First, create your substates, define an entry point and add a single
 transition. |Multiple entries|
 
-Now you need to save the file and open SCXML file in some text editor
+Now you need to save the file and open the SCXML file in a text editor
 (Qt Creator doesn't allow editing SCXML files directly). Find your
 section. |Original XML|
 
-Modify it to look like this (ignore **<qt:editorinfo>** tag). Add as many transitions as you need. |Modified XML|
+Modify it to look like this (ignore **<qt:editorinfo>** tag). Add as many
+transitions as you need. |Modified XML|
 
-After reloading SCXML file in Qt Creator your HSM should look like this.
+After reloading the SCXML file in Qt Creator your HSM should look like this.
 |Conditional entry points|
 
 
