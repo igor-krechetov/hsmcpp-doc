@@ -5,11 +5,11 @@ Features
 Overview
 ========
 
-**hsmcpp** library allows to use hierarchical state machine (HSM) in your
+**hsmcpp** library allows you to use a hierarchical state machine (HSM) in your
 project without worrying about the mechanism itself. Instead developers can focus on
-the structure and logic. The goal of this documentation is to explain how **hsmcpp**
-library can be used. So basics of HSM will not be covered. If you are are not familiar
-with state machines design pattern, you can familiarize yourself with HSM concept and terminology here:
+the structure and logic. The goal of this documentation is to explain how the **hsmcpp**
+library can be used, so the basics of HSM will not be covered. If you are not familiar
+with the state machine design pattern, you can familiarize yourself with the HSM concept and terminology here:
 
 *  `Welcome to the world of Statecharts <https://statecharts.dev>`_
 *  `Introduction to Hierarchical State Machines <https://barrgroup.com/embedded-systems/how-to/introduction-hierarchical-state-machines>`_

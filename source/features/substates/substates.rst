@@ -27,7 +27,7 @@ state machine. Any state can have substates added to it on the
 following conditions:
 
 -  any state can have only one parent;
--  there is no depth limitations when creating substates, but circle
+-  there is no depth limitation when creating substates, but circular
    inclusion is not allowed (A->B->C->A);
 -  at least one entry point must be specified for states with substates.
 
@@ -44,7 +44,7 @@ Adding a new substate is done using :hsmcpp:`HierarchicalStateMachine::registerS
 
    hsm.registerSubstate(MyStates::Parent, MyStates::StateC);
 
-Note that **Parent** must be a part of **MyStates** enum as any other state.
+Note that **Parent** must be a part of the **MyStates** enum, like any other state.
 
 
 .. _features-substates-entry_points:
@@ -120,7 +120,7 @@ condition callback Evaluates to TRUE only if value returned from     .. uml:: ./
 
 .. note:: Only one condition of each type can be used for a single entry point,
           but you can apply both of them at the same time (so you can have both event
-          and callback, but can't have 2 events defines for a single entry point).
+          and callback, but can't have 2 events defined for a single entry point).
 
 
 Priority of multiple entry points
@@ -156,7 +156,7 @@ Entry points with specified events:
 Final State
 ============
 
-A "Final state" is a state that represents the end of the composite state execution. When the state machine transitions to a final state, it means that it has completed processing and has nothing more to do. Unline regular states, it's impossible to transition to other states directly from a final state. Final states can be used in:
+A "Final state" is a state that represents the end of the composite state execution. When the state machine transitions to a final state, it means that it has completed processing and has nothing more to do. Unlike regular states, it's impossible to transition to other states directly from a final state. Final states can be used in:
 
 - state machine's top level;
 - composite state;
@@ -178,7 +178,7 @@ When defined in the top level, the final state is used as the ultimate end state
    :align: center
    :alt: Top level final state
 
-After transitioning into a top level final state it will be impossible to interract with a state machine instance (since it's impossible to leave the state directly).
+After transitioning into a top level final state it will be impossible to interact with a state machine instance (since it's impossible to leave the state directly).
 
 
 Final state in composite state
@@ -196,7 +196,7 @@ In composite states, the final state can also generate an event when entered, ju
 
 Multiple final states
 ~~~~~~~~~~~~~~~~~~~~~
-Since each final state has a unique ID, it's possible to register as manu final states as you need.
+Since each final state has a unique ID, it's possible to register as many final states as you need.
 
 .. uml:: ./substates_final_multiple.pu
    :align: center
@@ -205,7 +205,7 @@ Since each final state has a unique ID, it's possible to register as manu final 
 
 Final state in parallel state
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In parallel states, the final state is used to represent the completion of all the parallel tasks. For example, a state machine that controls irrigation system can use parallel states to run multiple water pumps. Final state can be used here to wait for all of the pumps to finish  their work before transitioning back to idle state.
+In parallel states, the final state is used to represent the completion of all the parallel tasks. For example, a state machine that controls an irrigation system can use parallel states to run multiple water pumps. Final state can be used here to wait for all of the pumps to finish their work before transitioning back to the idle state.
 
 .. uml:: ./substates_final_parallel.pu
    :align: center
@@ -226,14 +226,14 @@ Adding a new final state is done using :hsmcpp:`HierarchicalStateMachine::regist
 Events generation
 -----------------
 
-When using composite state we sometimes want to notify state machine that all substates were processed and final state was reached. To achieve this, after entering a final state an event is generated. It can be processed by parent state to transition to a next outer state. This behavior is configurable and can be:
+When using a composite state we sometimes want to notify the state machine that all substates were processed and the final state was reached. To achieve this, after entering a final state an event is generated. It can be processed by the parent state to transition to the next outer state. This behavior is configurable and can be:
 
 +----------------------------------------+---------------------------------------------+---------------------------------------------+
 | Action                                 | Code                                        | Example                                     |
 +========================================+=============================================+=============================================+
-| generate same event the one            |.. code-block::  c++                         | .. uml:: ./substates_final_event_same.pu    |
-| used to transition into the            |                                             |    :align: center                           |
-| final state                            |   hsm.registerState(MyStates::StateB);      |    :alt: Final state event re-emit          |
+| generate the same event that           |.. code-block::  c++                         | .. uml:: ./substates_final_event_same.pu    |
+| was used to transition into            |                                             |    :align: center                           |
+| the final state                        |   hsm.registerState(MyStates::StateB);      |    :alt: Final state event re-emit          |
 |                                        |   // not providing a custom event will      |                                             |
 |                                        |   // instruct HSM to re-emit event used     |                                             |
 |                                        |   // for transition to final state          |                                             |
@@ -287,6 +287,6 @@ When working with substates it's important to understand which states are consid
 
 When processing a new event, HSM will search for a matching transition starting from the deepest child (see :ref:`features-transitions-priority` for details).
 
-To get a list of all current active states you can use :hsmcpp:`HierarchicalStateMachine::getActiveStates` API. For the current example call to this method would return [Parent, Child_1, Child_1_2] array.
+To get a list of all current active states you can use :hsmcpp:`HierarchicalStateMachine::getActiveStates` API. For the current example, a call to this method would return the [Parent, Child_1, Child_1_2] array.
 
-.. note:: Keep in mind that this is more of a debug feature. If you need to add logic based on current actives states to your code then this is a potential red flag that there is something wrong with the design.
+.. note:: Keep in mind that this is more of a debug feature. If you need to add logic based on the current active states to your code then this is a potential red flag that there is something wrong with the design.

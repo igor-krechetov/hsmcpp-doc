@@ -23,18 +23,18 @@ progress from **"Washing"** through **"Rinsing"** to **"Spinning"**. If there is
 power cut, the washing machine will stop running and will go to the
 **"Power Off"** state. Then when the power is restored, the Running state is
 entered at the **"History State"** symbol meaning that it should resume
-where it last left-off.
+where it last left off.
 
-Each history state can have default transitions defined. This transition
-is used when a composite state had never been active before (therefore
-it's history being empty).
+Each history state can have a default transition defined. This transition
+is used when a composite state has never been active before (therefore
+its history being empty).
 
 Two types of history are supported:
 
 -  shallow
 -  deep
 
-.. note:: It's important to keep in mind, that, when restoring history,
+.. note:: It's important to keep in mind that, when restoring history,
           all corresponding callbacks will be executed (on enter, on state, on
           exit).
 
@@ -93,8 +93,8 @@ element.
 Deep history is indicated by a small circle containing an **"H*"**. It
 applies to the state that contains it.
 
-Let's look at the example. We have exactly same state machine, but now
-history type is set to "deep":
+Let's look at the example. We have exactly the same state machine, but now
+the history type is set to "deep":
 
 .. uml:: ./history_deep_01.pu
    :align: center
@@ -107,8 +107,8 @@ for **Parent1**:
    :align: center
    :alt: Sample HSM transition
 
-So after **E2** transition to history state, our HSM will look exactly same
-as it's initial version:
+So after the **E2** transition to the history state, our HSM will look exactly the same
+as its initial version:
 
 .. uml:: ./history_deep_01.pu
    :align: center

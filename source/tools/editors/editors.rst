@@ -13,15 +13,15 @@ SCXML editors
           concepts natively. The general-purpose SCXML editors below are
           documented as alternatives.
 
-Unfortunately, there doesn't seem to be too many available free SCXML editors, and even less of
-them are actively maintained. I tried to gather on this page all usable tools that I was able to find.
+Unfortunately, there don't seem to be too many free SCXML editors available, and even fewer of
+them are actively maintained. I tried to gather on this page all the usable tools that I was able to find.
 
 
 Qt Creator
 ================
 
 Qt Creator is the easiest one to start with. Though personally, I feel like
-arranging transitions is a bit sloppy. I hope they will add "snap-to-grid" feature in future releases.
+arranging transitions is a bit sloppy. I hope they will add a "snap-to-grid" feature in future releases.
 
 Can be downloaded from:
 
@@ -31,7 +31,7 @@ Can be downloaded from:
 
 .. warning:: Ubuntu version of Qt Creator crashes quite often when working with state machines. It's highly recommended to save often to avoid frustration.
 
-.. warning:: using *parallel* element in version 4.14.2 on Ubuntu **crashes editor when saving file**. This happens after editing state machine for awhile and doesn't seem to occur if only a couple of modifications were made. Hopefully will get fixed.
+.. warning:: using *parallel* element in version 4.14.2 on Ubuntu **crashes the editor when saving the file**. This happens after editing a state machine for a while and doesn't seem to occur if only a couple of modifications were made. Hopefully it will get fixed.
 
 |Editing HSM in Qt Creator|
 
