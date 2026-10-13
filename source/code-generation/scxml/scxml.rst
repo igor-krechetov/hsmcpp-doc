@@ -141,6 +141,8 @@ Supported SCXML tags and attributes
 +----------------------------------+----------+-----------+
 
 
+.. _scxml-callbacks:
+
 Callbacks Definition
 ====================
 
@@ -193,6 +195,90 @@ There are 5 types of callbacks that could be defined for HSM:
    </state>
 
 Callback names should comply with C++ identifier naming rules.
+
+
+.. _scxml-timers:
+
+Timers and actions
+==================
+
+:ref:`features-states-actions` in HSM provide the following operations:
+
+-  start timer
+-  stop timer
+-  restart timer
+-  trigger transition on timer
+-  trigger a regular transition
+
+Actions are defined inside ``<onentry>`` or ``<onexit>`` of a state, as
+``<script>`` content:
+
+.. code-block::  xml
+
+   <state id="state_1">
+       <onentry>
+           <script>start_timer(TIMER_1, 1000, true)</script>
+       </onentry>
+   </state>
+
+Command format:
+
+-  *start_timer(<timer_id>, < interval in milliseconds >, <is
+   singleshot: true \| false>)*
+-  *stop_timer(<timer_id>)*
+-  *restart_timer(<timer_id>)*
+-  *transition(<event_id>, {arg1, arg2, ...})*
+
+   -  .. note:: arguments are optional. at the moment only strings and numbers are supported
+
+Using any of the above timer actions will result in availability of a
+timer event. Name format: **ON_TIMER_<timer_id>**.
+
+
+.. _scxml-conditional-transitions:
+
+Conditional transitions
+======================
+
+A condition for a transition is specified in the ``cond`` attribute of
+``<transition>``:
+
+.. code-block::  xml
+
+   <state id="state_1">
+       <transition event="NEXT_STATE" cond="checkNextStateTransition" target="state_2"/>
+   </state>
+
+Possible formats:
+
+-  *<callback_name> is false*
+-  *<callback_name> is true*
+-  *<callback_name>* (same as "is true")
+
+
+.. _scxml-conditional-entry-points:
+
+Conditional entry points
+=======================
+
+Hsmcpp library supports :ref:`features-substates-conditional_entry_points`.
+At the SCXML level this is expressed by adding multiple transitions out of an
+``<initial>`` entry point, each with its own ``cond``:
+
+.. code-block::  xml
+
+   <state id="parent">
+       <initial>
+           <transition cond="useStateA" target="StateA"/>
+           <transition cond="useStateB" target="StateB"/>
+       </initial>
+       ...
+   </state>
+
+.. note:: Some GUI editors cannot define more than one transition from an
+          entry point directly, so this construct may need to be added by
+          editing the SCXML file manually. See the editor-specific notes in
+          :ref:`code-generation-editors` for the workaround.
 
 
 Splitting SCXML files

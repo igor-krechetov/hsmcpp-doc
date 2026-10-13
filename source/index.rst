@@ -21,6 +21,7 @@ hsmcpp Documentation
 
    getting-started/getting-started
    features/features
+   hsm-ide/doc/hsm-ide
    platforms/platforms
    code-generation/code-generation
    tools/tools

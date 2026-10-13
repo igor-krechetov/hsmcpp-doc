@@ -90,7 +90,20 @@ extensions = ['sphinx.ext.extlinks', 'sphinxemoji.sphinxemoji', 'myst_parser', #
               'sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinxcontrib.doxylink', 'sphinxcontrib.mermaid']
 
 templates_path = ['_templates']
-exclude_patterns = ['hsmcpp']
+# 'hsmcpp' submodule content is pulled in via include/literalinclude only, so exclude it
+# wholesale. The 'hsm-ide' submodule is referenced via toctree (code-generation/HSM-IDE),
+# which makes Sphinx scan the whole submodule; exclude everything except its doc/ tree so
+# the code repo's markdown files don't produce "not included in any toctree" warnings.
+exclude_patterns = [
+    'hsmcpp',
+    'hsm-ide/*.md',
+    'hsm-ide/agents',
+    'hsm-ide/req',
+    'hsm-ide/.github',
+    'hsm-ide/tests',
+    'hsm-ide/scripts',
+    'hsm-ide/packaging',
+]
 
 source_suffix = {
     ".rst": "restructuredtext",
