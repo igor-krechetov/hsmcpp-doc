@@ -1,14 +1,14 @@
 .. _code-generation-editors:
 
 ######################
-SCXML editors
+Thirdparty SCXML editors
 ######################
 
 .. contents::
    :local:
 
 
-.. note:: For designing hsmcpp state machines the recommended tool is
+.. note:: The recommended tool for designing hsmcpp state machines is
           :ref:`code-generation-hsm-ide`, which understands hsmcpp-specific
           concepts natively. The general-purpose SCXML editors below are
           documented as alternatives.

@@ -28,6 +28,12 @@ SCXML format was designed to describe both structure and functionality
 inside a single file. But since we are using it only to define structure,
 some of SCXML features will be ignored.
 
+hsmcpp was designed to work with the standard SCXML format, so any valid SCXML file
+describing a state machine structure can be used as an input. At the same time, the standard
+notation does not cover everything needed to generate C++ code (for example callbacks, timers
+or conditional entry points), so hsmcpp introduces custom notations to extend the available
+functionality. Such extensions are marked as *custom* in the table below.
+
 
 Supported SCXML tags and attributes
 ===================================

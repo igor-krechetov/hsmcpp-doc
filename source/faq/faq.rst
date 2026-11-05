@@ -20,10 +20,10 @@ You would need to create a separate dispatcher for each of your state machines. 
 Why does my application crash when I delete an instance of HSM / dispatcher?
 ############################################################################
 There could be a couple of reasons for the crash:
-* deleting dispatcher in incorrect place;
 
-   * Some dispatchers can be deleted only on the same thread where they were created (glib, glibmm, qt). Deleting them in a different thread will result in undefined behavior (which is usually a crash).
+* deleting dispatcher in incorrect place:
 
+   * some dispatchers can be deleted only on the same thread where they were created (glib, glibmm, qt). Deleting them in a different thread will result in undefined behavior (which is usually a crash).
 * having pending events in dispatcher at the moment of its destruction.
 
 
