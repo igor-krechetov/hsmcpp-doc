@@ -12,8 +12,6 @@ Platforms
 .. |na| replace:: |:x:|
 
 
-.. warning:: TODO: add API links
-
 Most of the hsmcpp library's functionality is platform independent. But implementation of events dispatching, timers and multi-threading support highly depends on underlying OS. To allow support of various execution environments platform and framework specific parts were separated into an abstraction layer. Required abstractions include:
 
 - mutex
@@ -24,7 +22,7 @@ Most of the hsmcpp library's functionality is platform independent. But implemen
 Supported Platforms
 ===================
 
-Platform selection is done using HSMBUILD_PLATFORM build setting. Depending on the provided value, some
+Platform selection is done using **HSMBUILD_PLATFORM** build setting (see :ref:`Possible build options <gettingstarted-build-options>`). Depending on the provided value, some
 dispatchers might not be available:
 
 +----------+----------------------------+-----------------+----------+--------------------------------------------------------------+
@@ -35,8 +33,11 @@ dispatchers might not be available:
 |          | Glib                       | |ok|            | |ok|     | set of std features available (specifically threads and      |
 |          +----------------------------+-----------------+----------+ synchronization) and is POSIX compliant, can be covered      |
 |          | Glibmm                     | |ok|            | |ok|     | by this implementation.                                      |
-|          +----------------------------+-----------------+----------+ For example: Linux, QNX, Integrity, etc.                     |
+|          +----------------------------+-----------------+----------+ For example: Linux, Integrity, etc.                          |
 |          | Qt                         | |ok|            | |ok|     |                                                              |
++----------+----------------------------+-----------------+----------+--------------------------------------------------------------+
+| qnx      | STD                        | |ok|            | |ok|     | Same as POSIX based implementation, with additional QNX      |
+|          |                            |                 |          | specific build settings. Supports QNX 7.1 and 8.0.           |
 +----------+----------------------------+-----------------+----------+--------------------------------------------------------------+
 | windows  | STD                        | |ok|            | |na|     | Same as POSIX based implementation, but doesn't include      |
 |          +----------------------------+-----------------+----------+ support for interrupts/signals.                              |
@@ -63,10 +64,10 @@ handled through events queue. To make things asynchronous, processing of
 this queue must be done on a separate thread or some kind of event loop.
 Since requirements to such processing mechanism will be different from
 project to project, it was decided to make it an additional abstraction
-(*IHsmEventDispatcher*) which could be replaced based on your specific
+(:hsmcpp:`IHsmEventDispatcher`) which could be replaced based on your specific
 needs.
 
-*IHsmEventDispatcher* responsibilities include:
+:hsmcpp:`IHsmEventDispatcher` responsibilities include:
 
 -  asynchronously invoke listeners' callbacks after an event is
    emitted;
@@ -75,8 +76,8 @@ needs.
 -  start/stop/restart timers;
 -  maintain a list of listeners.
 
-When initializing HSM object it's required to provide an instance of
-IHsmEventDispatcher. Unless you keep a copy of shared_ptr with
+When initializing HSM object (see :hsmcpp:`HierarchicalStateMachine::initialize`) it's required to provide an instance of
+:hsmcpp:`IHsmEventDispatcher`. Unless you keep a copy of shared_ptr with
 dispatcher instance, it will be destroyed automatically during HSM
 object destruction. Clients can use one of the built-in dispatchers or
 implement their own.
@@ -87,28 +88,40 @@ implement their own.
 Built-in Dispatchers
 ====================
 
-Currently hsmcpp includes the following dispatchers:
+Currently hsmcpp includes the following dispatchers (all of them are derived from :hsmcpp:`HsmEventDispatcherBase`):
 
-+-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
-|  Dispatcher                       | Creates Thread | Create / Init / Delete  | Details                                             |
-+===================================+================+=========================+=====================================================+
-| **HsmEventDispatcherSTD**         |    |ok|        | anywhere                | Internally starts std::thread and uses it to        |
-|                                   |                |                         | dispatch HSM events.                                |
-+-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
-| **HsmEventDispatcherGlib**        |    |na|        | event loop              | Dispatches hsm events through Glib main loop.       |
-+-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
-| **HsmEventDispatcherGlibmm**      |    |na|        | event loop              | Same as HsmEventDispatcherGlib, but uses Glibmm     |
-|                                   |                |                         | (C++ wrapper over Glib) and Glib::Dispatcher to     |
-|                                   |                |                         | handle events.                                      |
-+-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
-| **HsmEventDispatcherQt**          |    |na|        | event loop              | Dispatches hsm events through main Qt event loop.   |
-+-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
-| **HsmEventDispatcherArduino**     |    |na|        | anywhere                | Dispatches hsm events every time dispatchEvents()   |
-|                                   |                |                         | method is called in Arduino's loop() function.      |
-+-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
-| **HsmEventDispatcherFreeRTOS**    |    |ok|        | FreeRTOS Task           | Internally starts FreeRTOS task and uses it to      |
-|                                   |                |                         | dispatch HSM events.                                |
-+-----------------------------------+----------------+-------------------------+-----------------------------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 12 18 42
+
+   * - Dispatcher
+     - Creates Thread
+     - Create / Init / Delete
+     - Details
+   * - :hsmcpp:`HsmEventDispatcherSTD`
+     - |ok|
+     - anywhere
+     - Internally starts std::thread and uses it to dispatch HSM events.
+   * - :hsmcpp:`HsmEventDispatcherGLib`
+     - |na|
+     - event loop
+     - Dispatches hsm events through Glib main loop.
+   * - :hsmcpp:`HsmEventDispatcherGLibmm`
+     - |na|
+     - event loop
+     - Same as HsmEventDispatcherGLib, but uses Glibmm (C++ wrapper over Glib) and Glib::Dispatcher to handle events.
+   * - :hsmcpp:`HsmEventDispatcherQt`
+     - |na|
+     - event loop
+     - Dispatches hsm events through main Qt event loop.
+   * - :hsmcpp:`HsmEventDispatcherArduino`
+     - |na|
+     - anywhere
+     - Dispatches hsm events every time dispatchEvents() method is called in Arduino's loop() function.
+   * - :hsmcpp:`HsmEventDispatcherFreeRTOS`
+     - |ok|
+     - FreeRTOS Task
+     - Internally starts FreeRTOS task and uses it to dispatch HSM events.
 
 Since these dispatchers have dependencies on external libraries (and only
 one of them is usually needed) you need to explicitly enable them for
@@ -125,7 +138,7 @@ compilation using these CMake options:
 HsmEventDispatcherSTD
 ---------------------
 
-HsmEventDispatcherSTD is a simple thread based dispatcher. Internally it
+See :hsmcpp:`HsmEventDispatcherSTD`. It is a simple thread based dispatcher. Internally it
 uses std::thread to start a new thread.
 
 Simplified logic:
@@ -138,7 +151,7 @@ This dispatcher is compatible with all types of applications and should
 not interfere with existing event loops from other frameworks. If
 desirable it's also possible to use HsmEventDispatcherSTD as a
 replacement of your application main loop. To do so you need to call
-HsmEventDispatcherSTD::join() to prevent main thread from exiting. For
+:hsmcpp:`HsmEventDispatcherSTD::join` to prevent main thread from exiting. For
 reference see :repo-link:`/examples/00_helloworld/00_helloworld_std.cpp`.
 
 .. _platforms-dispatcher-glib:
@@ -146,7 +159,7 @@ reference see :repo-link:`/examples/00_helloworld/00_helloworld_std.cpp`.
 HsmEventDispatcherGlib
 ----------------------
 
-HsmEventDispatcherGlib utilizes GLib main loop and pipe to dispatch
+See :hsmcpp:`HsmEventDispatcherGLib`. It utilizes GLib main loop and pipe to dispatch
 events. Clients can specify which GLib context to use (if application
 has multiple) by providing GMainContext to constructor:
 
@@ -165,7 +178,7 @@ To use default GLib main loop just use default constructor:
 HsmEventDispatcherGlibmm
 ------------------------
 
-In general is same as HsmEventDispatcherGlib, but it utilizes
+See :hsmcpp:`HsmEventDispatcherGLibmm`. In general is same as :hsmcpp:`HsmEventDispatcherGLib`, but it utilizes
 GLib::Dispatcher class to handle events. Due to GLib::Dispatcher
 implementation this applies some restrictions:
 
@@ -192,7 +205,7 @@ the same Glib main loop).
 HsmEventDispatcherQt
 --------------------
 
-HsmEventDispatcherQt utilizes QCoreApplication::postEvent() function for
+See :hsmcpp:`HsmEventDispatcherQt`. It utilizes QCoreApplication::postEvent() function for
 posting events on Qt's main event loop. As a result all HSM callbacks
 are executed on the same thread where event loop is running (usually
 main thread).
@@ -203,7 +216,7 @@ main thread).
 HsmEventDispatcherArduino
 -------------------------
 
-Dispatching is done by periodically calling dispatchEvents() in the Arduino's loop() function. All transitions and callbacks
+See :hsmcpp:`HsmEventDispatcherArduino`. Dispatching is done by periodically calling dispatchEvents() in the Arduino's loop() function. All transitions and callbacks
 are processed within it. Therefore it's advised to avoid using blocking operations inside HSM callbacks
 to make your software more responsive. Instead, utilization of async APIs is highly recommended.
 When possible, try replacing calls to delay() with HSM timeouts.
@@ -223,7 +236,7 @@ and `PlatformIO package <https://registry.platformio.org/libraries/igor-krecheto
 HsmEventDispatcherFreeRTOS
 --------------------------
 
-HsmEventDispatcherFreeRTOS utilizes a custom FreeRTOS Task to handle HSM events and callbacks.
+See :hsmcpp:`HsmEventDispatcherFreeRTOS`. It utilizes a custom FreeRTOS Task to handle HSM events and callbacks.
 Task is created and started during the call to the dispatcher's initialize() API.
 
 .. note:: Creation and initialization of HSM and dispatcher should  be done inside of a Task and not main() function.
@@ -274,7 +287,7 @@ Even though STD based dispatcher will work in all situations, sometimes
 it's not desirable or even impossible to have an additional unmanaged
 thread running in the process (for example in case of RTOS systems which
 often utilize watchdog mechanism). In this case it's possible to use
-your own dispatcher by implementing the **IHsmEventDispatcher** interface.
+your own dispatcher by implementing the :hsmcpp:`IHsmEventDispatcher` interface.
 When doing so, keep the following things in mind:
 
 -  emit() method should be thread-safe.
@@ -285,8 +298,8 @@ When doing so, keep the following things in mind:
    This is needed to support sharing dispatcher between different HSM
    instances.
 
-Even though you can implement **IHsmEventDispatcher** interface
-directly, it's recommended to use **HsmEventDispatcherBase** as your
+Even though you can implement :hsmcpp:`IHsmEventDispatcher` interface
+directly, it's recommended to use :hsmcpp:`HsmEventDispatcherBase` as your
 parent class.
 
 I recommend checking existing dispatchers as a reference to get an idea

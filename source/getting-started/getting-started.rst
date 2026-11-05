@@ -26,67 +26,89 @@ Requirements
 ------------
 
 * CMake 3.16+
-* Python 3.8+
+* C++11 compatible compiler
+* Python 3.8+ (only needed for the :ref:`code generator <code-generation-scxml>`)
 
 
-Ubuntu
-------
-
-The simplest way to build hsmcpp is to run the build.sh script:
+Linux
+-------------------
 
 .. code-block::  bash
 
    git clone https://github.com/igor-krechetov/hsmcpp.git
    cd ./hsmcpp
-   ./build.sh
+   cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release
+   cmake --build ./build -j
+   cmake --install ./build        # optional, may require sudo
+
+By default this builds the library, unit tests and examples, and only the STD based dispatcher
+is enabled. Use build options to change that (see `Possible build options`_).
+The default value of **HSMBUILD_PLATFORM** is *posix* (see :ref:`platforms`).
 
 
 Windows
 -------
 
-You can build hsmcpp with any tools that you have, but provided script
-build_vs.cmd requires Visual Studio 2015 or newer. Make sure to set
-correct path to your Visual Studio directory in build_vs.cmd:
+You can use any toolchain supported by CMake (Visual Studio 2015 or newer, MinGW, etc.). Platform
+must be set explicitly since *posix* is the default:
 
-.. code-block::  bash
+.. code-block::  bat
 
-   call "c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
+   git clone https://github.com/igor-krechetov/hsmcpp.git
+   cd hsmcpp
+   cmake -S . -B build -DHSMBUILD_PLATFORM=windows
+   cmake --build build --config Release
 
-By default only STD based dispatcher is enabled. To enable Qt based one
-uncomment following lines and change path to match your Qt directory:
+To enable the Qt based dispatcher add **-DHSMBUILD_DISPATCHER_QT=ON** and make sure CMake can find Qt
+(for example by setting **CMAKE_PREFIX_PATH** to your Qt directory):
 
-.. code-block::  bash
+.. code-block::  bat
 
-   set Qt5_DIR=C:\Qt\5.9\5.9.2\msvc2015\lib\cmake\Qt5
-   cmake -DHSMBUILD_DISPATCHER_GLIB=OFF -DHSMBUILD_DISPATCHER_GLIBMM=OFF ..
+   cmake -S . -B build -DHSMBUILD_PLATFORM=windows -DHSMBUILD_DISPATCHER_QT=ON -DCMAKE_PREFIX_PATH=C:\Qt\6.8.3\msvc2022_64
 
-To build GLib and GLibmm based dispatchers you will need to provide
-pkg-config and corresponding libraries yourself.
+GLib and GLibmm based dispatchers are not available on Windows.
 
+
+FreeRTOS and Arduino
+--------------------
+
+These platforms have additional requirements. See :ref:`platforms-dispatcher-freertos` and
+:ref:`platforms-dispatcher-arduino`.
+
+
+.. _gettingstarted-build-options:
 
 Possible build options
 ----------------------
 
-================================= ==============================================================================================================
-Option                            Description
-================================= ==============================================================================================================
-**HSMBUILD_VERBOSE**              Enable/disable HSM verbosity (usually OFF since it's only needed for hsmcpp development)
-**HSMBUILD_STRUCTURE_VALIDATION** Enable/disable HSM structure validation
-**HSMBUILD_THREAD_SAFETY**        Enable/disable HSM thread safety
-**HSMBUILD_DEBUGGING**            Enable/disable support for HSM debugging using hsmdebugger (recommended to turn off in production build)
-**HSMBUILD_DISPATCHER_GLIB**      Enable GLib dispatcher
-**HSMBUILD_DISPATCHER_GLIBMM**    Enable GLibmm dispatcher
-**HSMBUILD_DISPATCHER_STD**       Enable std::thread based dispatcher
-**HSMBUILD_DISPATCHER_QT**        Enable Qt based dispatcher
-**HSMBUILD_TESTS**                Build unittests
-**HSMBUILD_EXAMPLES**             Build examples
-================================= ==============================================================================================================
+============================================= ==============================================================================================================
+Option                                        Description
+============================================= ==============================================================================================================
+**HSMBUILD_PLATFORM**                         Target platform. Possible values: *posix* (default), *windows*, *qnx*, *freertos*, *arduino*. See :ref:`platforms`
+**HSMBUILD_TARGET**                           Desired build output. Possible values: *library* (default), *platformio*, *arduinoide*
+**HSMBUILD_VERBOSE**                          Enable/disable HSM verbosity (usually OFF since it's only needed for hsmcpp development)
+**HSMBUILD_STRUCTURE_VALIDATION**             Enable/disable HSM structure validation (default ON)
+**HSMBUILD_THREAD_SAFETY**                    Enable/disable HSM thread safety (default ON)
+**HSMBUILD_DEBUGGING**                        Enable/disable support for HSM debugging using hsmdebugger (default ON, recommended to turn off in production build)
+**HSMBUILD_DISPATCHER_GLIB**                  Enable GLib dispatcher
+**HSMBUILD_DISPATCHER_GLIBMM**                Enable GLibmm dispatcher
+**HSMBUILD_DISPATCHER_STD**                   Enable std::thread based dispatcher (default ON)
+**HSMBUILD_DISPATCHER_QT**                    Enable Qt based dispatcher
+**HSMBUILD_DISPATCHER_FREERTOS**              Enable FreeRTOS based dispatcher
+**HSMBUILD_FREERTOS_ROOT**                    FreeRTOS sources root folder (freertos platform only)
+**HSMBUILD_FREERTOS_CONFIG_FILE_DIRECTORY**   Path to folder with FreeRTOSConfig.h (freertos platform only)
+**HSMBUILD_FREERTOS_DEFAULT_ISR_DETECT**      Enable default xPortIsInsideInterrupt implementation (freertos platform only)
+**HSMBUILD_TESTS**                            Build unittests (default ON)
+**HSMBUILD_EXAMPLES**                         Build examples (default ON)
+**HSMBUILD_CODECOVERAGE**                     Build with code coverage instrumentation
+**HSMBUILD_CLANGTIDY**                        Enable validation with clang-tidy (if available)
+============================================= ==============================================================================================================
 
 Options can be applied when running cmake:
 
 .. code-block::  bash
 
-   cmake -DHSMBUILD_TESTS=OFF -DHSMBUILD_EXAMPLES=OFF ..
+   cmake -DHSMBUILD_PLATFORM=posix -DHSMBUILD_TESTS=OFF -DHSMBUILD_EXAMPLES=OFF ..
 
 
 .. _gettingstarted-hello-world:

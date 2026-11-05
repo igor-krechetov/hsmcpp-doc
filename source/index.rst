@@ -6,13 +6,10 @@ hsmcpp Documentation
    :google-site-verification: y_zRJ6QfXGaFU2bqDrJmpc9jfMTpLXWQao_9BOcU5F4
    :description lang=en: hsmcpp is a c++ library which provides an easy way to define and use hierarchical/finite state machines (HSM/FSM). Optimized for embedded projects and RTOS.
 
-.. note::
-   This project is under active development.
-
 
 .. include:: ./hsmcpp/README.md
    :parser: myst_parser.sphinx_
-   :end-line: 167
+   :end-line: 189
 
 .. toctree::
    :maxdepth: 4

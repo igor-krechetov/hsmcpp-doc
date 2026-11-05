@@ -1,4 +1,5 @@
 .vscode
+.agents
 build
 _build
 _gen
